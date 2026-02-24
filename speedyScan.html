@@ -1,0 +1,3796 @@
+<!DOCTYPE html>
+<html dir="rtl">
+<head>
+<!-- Updated: 2026-02-16 - Andromeda v8 - Advanced Algorithm فعال + Website Selection -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>اندرومدا - v8 (Cloudflare IP Scanner)</title>
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Tahoma, Arial, sans-serif;
+    background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 50%, #0f0f23 100%);
+    color: #fff;
+    min-height: 100vh;
+    padding: 12px;
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 20px;
+    padding: 15px 0;
+}
+
+.header h1 {
+    font-size: 32px;
+    background: linear-gradient(135deg, #00d4ff 0%, #667eea 50%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 10px;
+    font-weight: 900;
+    letter-spacing: 1px;
+}
+
+.header p {
+    color: #a0a0a0;
+    font-size: 14px;
+}
+
+.card {
+    background: rgba(22, 33, 62, 0.7);
+    border-radius: 20px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(102, 126, 234, 0.2);
+    backdrop-filter: blur(10px);
+}
+
+.card h2 {
+    font-size: 20px;
+    margin-bottom: 15px;
+    color: #667eea;
+}
+
+textarea {
+    width: 100%;
+    background: rgba(15, 52, 96, 0.6);
+    border: 2px solid rgba(102, 126, 234, 0.3);
+    border-radius: 12px;
+    padding: 12px;
+    color: #fff;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    resize: vertical;
+    min-height: 100px;
+    transition: all 0.3s;
+}
+
+textarea:focus {
+    outline: none;
+    border-color: #667eea;
+    background: rgba(15, 52, 96, 0.9);
+    box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
+}
+
+.btn {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 12px;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #00d4ff 0%, #667eea 50%, #764ba2 100%);
+    color: #fff;
+    box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
+}
+
+.btn-primary:hover {
+    box-shadow: 0 6px 30px rgba(102, 126, 234, 0.6);
+}
+
+.btn-primary:active {
+    transform: scale(0.98);
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: #fff;
+    box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3);
+}
+
+.btn-success:hover {
+    box-shadow: 0 6px 30px rgba(16, 185, 129, 0.5);
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    color: #fff;
+    box-shadow: 0 4px 20px rgba(239, 68, 68, 0.3);
+}
+
+.settings-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-group label {
+    font-size: 11px;
+    margin-bottom: 4px;
+    color: #a0a0a0;
+}
+
+.input-group input {
+    background: rgba(15, 52, 96, 0.6);
+    border: 2px solid rgba(102, 126, 234, 0.2);
+    border-radius: 10px;
+    padding: 8px 12px;
+    color: #fff;
+    font-size: 13px;
+    width: 100%;
+    transition: all 0.3s;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: #667eea;
+    background: rgba(15, 52, 96, 0.9);
+    box-shadow: 0 0 15px rgba(102, 126, 234, 0.3);
+}
+
+.checkbox-card {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.05) 100%);
+    border: 2px solid rgba(102, 126, 234, 0.3);
+    border-radius: 15px;
+    padding: 15px;
+    margin-bottom: 10px;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s;
+}
+
+.checkbox-card:hover {
+    border-color: rgba(102, 126, 234, 0.5);
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.1) 100%);
+}
+
+.checkbox-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.checkbox-header h3 {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.switch {
+    position: relative;
+    width: 50px;
+    height: 26px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 26px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #667eea;
+}
+
+input:checked + .slider:before {
+    transform: translateX(24px);
+}
+
+.options-content {
+    display: none;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.options-content.active {
+    display: grid;
+}
+
+#advancedPanel {
+    display: block !important;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    padding: 0;
+}
+
+#advancedPanel[style*="max-height: 1000px"] {
+    padding: 15px 0;
+}
+
+.progress-card {
+    display: none;
+}
+
+.progress-card.active {
+    display: block;
+}
+
+.progress-bar-container {
+    background: rgba(15, 52, 96, 0.6);
+    border-radius: 15px;
+    height: 25px;
+    overflow: hidden;
+    margin-bottom: 15px;
+    border: 2px solid rgba(102, 126, 234, 0.2);
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #00d4ff 0%, #667eea 50%, #764ba2 100%);
+    transition: width 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: bold;
+    box-shadow: 0 0 20px rgba(102, 126, 234, 0.5);
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.stat-box {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.1) 100%);
+    border: 1px solid rgba(102, 126, 234, 0.3);
+    border-radius: 15px;
+    padding: 15px;
+    text-align: center;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s;
+}
+
+.stat-box:hover {
+    border-color: rgba(102, 126, 234, 0.6);
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.3) 0%, rgba(118, 75, 162, 0.2) 100%);
+}
+
+.stat-box .number {
+    font-size: 24px;
+    font-weight: bold;
+    color: #667eea;
+}
+
+.stat-box .label {
+    font-size: 11px;
+    color: #a0a0a0;
+    margin-top: 4px;
+}
+
+.results-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.results-header h2 {
+    margin: 0;
+}
+
+.btn-group {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-sm {
+    padding: 10px 16px;
+    font-size: 13px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+.btn-sm:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.btn-sm:active {
+    transform: scale(0.95);
+}
+
+.result-item {
+    background: rgba(15, 52, 96, 0.6);
+    border-radius: 15px;
+    padding: 15px;
+    margin-bottom: 12px;
+    border: 1px solid rgba(102, 126, 234, 0.2);
+    transition: all 0.3s;
+    backdrop-filter: blur(10px);
+}
+
+.result-item:hover {
+    background: rgba(15, 52, 96, 0.8);
+    border-color: rgba(102, 126, 234, 0.4);
+    box-shadow: 0 4px 20px rgba(102, 126, 234, 0.2);
+}
+
+.result-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.result-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.result-rank {
+    font-size: 18px;
+    font-weight: bold;
+    color: #667eea;
+}
+
+.status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.status-green { background: #10b981; }
+.status-yellow { background: #fbbf24; }
+.status-orange { background: #f97316; }
+
+.result-ip {
+    font-family: monospace;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.result-stats {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.ping-value {
+    font-size: 28px;
+    font-weight: bold;
+    color: #667eea;
+}
+
+.speed-info {
+    font-size: 12px;
+    color: #a0a0a0;
+}
+
+.copy-btn {
+    background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%);
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 13px;
+    white-space: nowrap;
+    transition: all 0.3s;
+    box-shadow: 0 4px 15px rgba(236, 72, 153, 0.3);
+}
+
+.copy-btn:hover {
+    box-shadow: 0 6px 25px rgba(236, 72, 153, 0.5);
+    transform: translateY(-2px);
+}
+
+.copy-btn:active {
+    transform: scale(0.95);
+}
+
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #a0a0a0;
+}
+
+.empty-state .icon {
+    font-size: 60px;
+    margin-bottom: 15px;
+}
+
+.alert {
+    padding: 12px;
+    border-radius: 8px;
+    margin-top: 12px;
+}
+
+.alert-success {
+    background: rgba(16, 185, 129, 0.2);
+    color: #10b981;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.alert-error {
+    background: rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: #fff;
+    padding: 16px 24px;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(16, 185, 129, 0.4);
+    z-index: 1000;
+    animation: slideIn 0.3s ease;
+    font-weight: 500;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(400px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.hidden {
+    display: none;
+}
+
+/* Floating Help Button */
+.float-btn {
+    position: fixed;
+    bottom: 30px;
+    left: 30px;
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 50%;
+    border: none;
+    color: white;
+    font-size: 28px;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(102, 126, 234, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 999;
+}
+
+.float-btn:hover {
+    box-shadow: 0 6px 30px rgba(102, 126, 234, 0.8);
+    transform: scale(1.1);
+}
+
+.float-btn:active {
+    transform: scale(0.95);
+}
+
+/* Modal Overlay */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(5px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Help Modal */
+.help-modal {
+    background: rgba(22, 33, 62, 0.95);
+    border: 2px solid rgba(102, 126, 234, 0.3);
+    border-radius: 20px;
+    padding: 40px;
+    max-width: 700px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.help-modal h1 {
+    font-size: 28px;
+    margin-bottom: 10px;
+    background: linear-gradient(135deg, #00d4ff 0%, #667eea 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.help-modal p {
+    font-size: 14px;
+    color: #a0a0a0;
+    margin-bottom: 25px;
+}
+
+.help-section {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.05) 100%);
+    border-left: 4px solid #667eea;
+    border-radius: 10px;
+}
+
+.help-section h3 {
+    font-size: 16px;
+    color: #667eea;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.help-section p {
+    font-size: 13px;
+    color: #b0b0b0;
+    margin: 0;
+    line-height: 1.6;
+}
+
+.help-section code {
+    background: rgba(15, 52, 96, 0.6);
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: #00d4ff;
+    font-family: monospace;
+    font-size: 12px;
+}
+
+.close-help-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: transparent;
+    border: none;
+    color: #a0a0a0;
+    font-size: 32px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.close-help-btn:hover {
+    color: #fff;
+    transform: rotate(90deg);
+}
+
+@media (max-width: 640px) {
+    .float-btn {
+        bottom: 20px;
+        left: 20px;
+        width: 50px;
+        height: 50px;
+        font-size: 24px;
+    }
+    
+    .help-modal {
+        margin: 20px;
+        padding: 25px;
+        max-height: 90vh;
+    }
+    
+    .help-modal h1 {
+        font-size: 22px;
+    }
+}
+
+@media (max-width: 640px) {
+    .header h1 {
+        font-size: 26px;
+    }
+    
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+    
+    .result-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .result-stats {
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .btn-group {
+        width: 100%;
+        gap: 6px;
+    }
+    
+    .btn-sm {
+        flex: 1;
+        padding: 10px 12px;
+        font-size: 12px;
+    }
+    
+    .settings-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    .copy-btn {
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+}
+
+/* Start Screen Styles */
+.start-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.95) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    backdrop-filter: blur(10px);
+}
+
+.start-content {
+    text-align: center;
+    animation: slideInDown 0.8s ease;
+}
+
+.start-logo {
+    font-size: 80px;
+    margin-bottom: 20px;
+    animation: bounce 2s infinite;
+    display: inline-block;
+}
+
+.start-title {
+    font-size: 48px;
+    font-weight: bold;
+    background: linear-gradient(135deg, #00d4ff 0%, #667eea 50%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 10px;
+    animation: slideInDown 0.8s ease 0.2s forwards;
+    opacity: 0;
+}
+
+.start-subtitle {
+    font-size: 18px;
+    color: #a0a0a0;
+    margin-bottom: 40px;
+    animation: slideInDown 0.8s ease 0.3s forwards;
+    opacity: 0;
+}
+
+.start-button {
+    display: inline-block;
+    padding: 18px 50px;
+    font-size: 18px;
+    font-weight: bold;
+    background: linear-gradient(135deg, #00d4ff 0%, #667eea 50%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 10px 40px rgba(102, 126, 234, 0.4);
+    transition: all 0.3s ease;
+    animation: slideInUp 0.8s ease 0.4s forwards;
+    opacity: 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.start-button:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 15px 50px rgba(102, 126, 234, 0.6);
+}
+
+.loading-dots {
+    margin-top: 30px;
+    animation: slideInUp 0.8s ease 0.5s forwards;
+    opacity: 0;
+}
+
+.loading-dots span {
+    font-size: 24px;
+    font-weight: bold;
+    color: #667eea;
+    margin: 0 5px;
+    animation: blink 1.4s infinite;
+}
+
+.loading-dots span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.loading-dots span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+.hidden {
+    display: none !important;
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+@keyframes slideInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeOutDown {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+}
+
+@keyframes blink {
+    0%, 20%, 50%, 80%, 100% { opacity: 1; }
+    40% { opacity: 0.3; }
+    60% { opacity: 0.5; }
+}
+</style>
+</head>
+<body>
+<!-- Start Screen -->
+<div id="startScreen" class="start-screen">
+    <div class="start-content">
+        <div class="start-logo">⚡</div>
+        <div class="start-title">speedy Scan</div>
+        <div class="start-subtitle">AndromedA</div>
+        <button class="start-button" onclick="startApp()">شروع 🚀</button>
+        <div class="loading-dots">
+            <span>.</span><span>.</span><span>.</span>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="header">
+        <h1>speedy Scan</h1>
+        <p>Andromeda - @v2meda</p>
+        <p>ساخت کانفیگ فعال در هر منطقه ای</p>
+        <p style="font-size: 12px; margin-top: 5px;">GitHub: AmirForge | Telegram: @Dusty_Mesa</p>
+    </div>
+
+    <div id="configCard" class="card hidden" style="display: none;">
+        <h2>کانفیگ VLESS</h2>
+        <textarea id="vlessCfg" placeholder="کانفیگ VLESS را اینجا وارد کنید...">vless://a088b708-8ea5-44f4-aab0-96ce76fd21eb@104.17.10.46:2086?type=httpupgrade&encryption=none&path=%2FeyJqdW5rIjoiNDBNWGY3Z0NPd0loZ2YiLCJwcm90b2NvbCI6InZsIiwibW9kZSI6InByb3h5aXAiLCJwYW5lbElQcyI6W119%3Fed%3D2560&host=andro010101111011111000000010101000000101010101.andro-meda.ir&security=none#Andromeda%E2%9A%A1-@v2meda</textarea>
+        <button class="btn btn-primary" onclick="loadVless()">بارگذاری کانفیگ</button>
+        <div id="msg"></div>
+    </div>
+
+    <div id="operatorPanel" class="card hidden" style="margin-bottom: 15px;">
+        <h2>انتخاب اپراتور</h2>
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 15px;">
+            <button onclick="setProfileMCI()" style="padding: 12px; background: linear-gradient(135deg, rgba(0, 212, 255, 0.9) 0%, rgba(102, 126, 234, 0.9) 100%); color: white; border: 1px solid rgba(102, 126, 234, 0.3); border-radius: 12px; font-weight: bold; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2); font-size: 14px;">📶 همراه اول</button>
+            <button onclick="setProfileIrancell()" style="padding: 12px; background: linear-gradient(135deg, rgba(255, 193, 7, 0.9) 0%, rgba(255, 152, 0, 0.9) 100%); color: white; border: 1px solid rgba(255, 215, 0, 0.3); border-radius: 12px; font-weight: bold; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 15px rgba(255, 193, 7, 0.2); font-size: 14px;">📱 ایرانسل</button>
+            <button onclick="setProfileRightel()" style="padding: 12px; background: linear-gradient(135deg, rgba(156, 102, 255, 0.8) 0%, rgba(123, 31, 162, 0.8) 100%); color: white; border: 1px solid rgba(186, 155, 255, 0.3); border-radius: 12px; font-weight: bold; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 15px rgba(156, 102, 255, 0.15); font-size: 14px;">🔷 رایتل</button>
+            <button onclick="setProfileShatel()" style="padding: 12px; background: linear-gradient(135deg, rgba(46, 204, 113, 0.8) 0%, rgba(22, 160, 133, 0.8) 100%); color: white; border: 1px solid rgba(102, 230, 183, 0.3); border-radius: 12px; font-weight: bold; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 15px rgba(46, 204, 113, 0.15); font-size: 14px;">🌐 شاتل</button>
+            <button onclick="setProfileSamantell()" style="padding: 12px; background: linear-gradient(135deg, rgba(255, 152, 0, 0.8) 0%, rgba(204, 102, 0, 0.8) 100%); color: white; border: 1px solid rgba(255, 178, 102, 0.3); border-radius: 12px; font-weight: bold; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 15px rgba(255, 152, 0, 0.15); font-size: 14px;">🔶 سامانتل</button>
+            <button onclick="openCustomProfile()" style="padding: 12px; background: linear-gradient(135deg, rgba(120, 120, 120, 0.8) 0%, rgba(80, 80, 80, 0.8) 100%); color: white; border: 1px solid rgba(150, 150, 150, 0.3); border-radius: 12px; font-weight: bold; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 15px rgba(120, 120, 120, 0.15); font-size: 14px;">⚙️ سفارشی</button>
+        </div>
+    </div>
+
+    <div id="panel" class="hidden">
+        <div class="card">
+            <h2>تنظیمات</h2>
+            
+            <div class="settings-grid">
+                <div class="input-group">
+                    <label>تعداد IP</label>
+                    <input type="number" id="num" value="50">
+                </div>
+                <div class="input-group">
+                    <label>Timeout (ms)</label>
+                    <input type="number" id="time" value="6000">
+                </div>
+                <div class="input-group">
+                    <label>Max Ping</label>
+                    <input type="number" id="ping" value="800">
+                </div>
+                <div class="input-group">
+                    <label>همزمان</label>
+                    <input type="number" id="con" value="10">
+                </div>
+                <div class="input-group">
+                    <label>نتایج</label>
+                    <input type="number" id="max" value="100">
+                </div>
+            </div>
+
+            <div class="checkbox-card" style="margin-bottom: 15px;">
+                <div class="checkbox-header" onclick="toggleAdvanced()" style="cursor: pointer;">
+                    <h3 style="margin: 0;">⚙️ تنظیمات پیشرفته</h3>
+                    <span id="advancedArrow" style="font-size: 20px; transition: transform 0.3s;">▼</span>
+                </div>
+                <div id="advancedPanel" style="max-height: 600px; overflow-y: auto; overflow-x: hidden;">
+                    <div class="checkbox-card" style="background: transparent; border: none; margin-bottom: 15px;">
+                        <div class="checkbox-header">
+                            <h3>🧠 اسکن هوشمند</h3>
+                            <label class="switch">
+                                <input type="checkbox" id="smartScan" unchecked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <p style="font-size: 12px; color: #a0a0a0; margin-top: 8px;">IP خوبی پیدا شد؟ IP های مجاور (+/-1,2,3,4,5) رو هم تست کن</p>
+                    </div>
+
+                    <div class="checkbox-card" style="background: transparent; border: none; margin-bottom: 15px;">
+                        <div class="checkbox-header">
+                            <h3>🌐 انتخاب سایت</h3>
+                            <label class="switch">
+                                <input type="checkbox" id="selectWebsite" unchecked onchange="toggleWebsiteMode()">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div id="websiteContent" style="display: none; margin-top: 12px;">
+                            <div class="input-group">
+                                <label>🌐 سایت را انتخاب کنید</label>
+                                <select id="websiteSelect" style="width: 100%; padding: 8px; background: #1a1a2e; color: #4f46e5; border: 1px solid #333; border-radius: 4px; font-family: monospace;">
+                                    <option value="">-- انتخاب سایت --</option>
+                                    <option value="test-all">⚡ تست همه سایت‌ها (77 سایت)</option>
+                                    <option value="">━━━━━━━━━━━━━━━━━━━</option>
+                                    <option value="chatgpt">🤖 ChatGPT</option>
+                                    <option value="stackoverflow">📚 Stack Overflow</option>
+                                    <option value="wikipedia">📖 Wikipedia</option>
+                                    <option value="cloudflare">☁️ Cloudflare</option>
+                                    <option value="github">🐙 GitHub</option>
+                                    <option value="discord">💬 Discord</option>
+                                    <option value="notion">📝 Notion</option>
+                                    <option value="figma">🎨 Figma</option>
+                                    <option value="slack">💼 Slack</option>
+                                    <option value="stripe">💳 Stripe</option>
+                                    <option value="twitch">🎮 Twitch</option>
+                                    <option value="shopify">🛍️ Shopify</option>
+                                    <option value="asana">📋 Asana</option>
+                                    <option value="jira">🔧 Jira</option>
+                                    <option value="datadog">📊 Datadog</option>
+                                    <option value="sentry">🚨 Sentry</option>
+                                    <option value="vercel">▲ Vercel</option>
+                                    <option value="netlify">🔗 Netlify</option>
+                                    <option value="npm">📦 NPM Registry</option>
+                                    <option value="rubygems">💎 RubyGems</option>
+                                    <option value="heroku">🔷 Heroku</option>
+                                    <option value="digitalocean">🌊 DigitalOcean</option>
+                                    <option value="linode">🐧 Linode</option>
+                                    <option value="vultr">⚡ Vultr</option>
+                                    <option value="aws">🔶 AWS</option>
+                                    <option value="azure">🟦 Microsoft Azure</option>
+                                    <option value="gcp">🔵 Google Cloud</option>
+                                    <option value="bitbucket">🪣 Bitbucket</option>
+                                    <option value="gitlab">🦊 GitLab</option>
+                                    <option value="docker">🐳 Docker Hub</option>
+                                    <option value="kubernetes">☸️ Kubernetes</option>
+                                    <option value="terraform">🏗️ Terraform</option>
+                                    <option value="hashicorp">🔰 HashiCorp</option>
+                                    <option value="jenkins">👷 Jenkins</option>
+                                    <option value="gitlab-ci">🔄 GitLab CI/CD</option>
+                                    <option value="circleci">⭕ CircleCI</option>
+                                    <option value="travis">⏳ Travis CI</option>
+                                    <option value="github-actions">🤖 GitHub Actions</option>
+                                    <option value="docker-compose">🐳 Docker Compose</option>
+                                    <option value="prometheus">🔥 Prometheus</option>
+                                    <option value="grafana">📈 Grafana</option>
+                                    <option value="elasticsearch">🔍 Elasticsearch</option>
+                                    <option value="kibana">🔎 Kibana</option>
+                                    <option value="logstash">📝 Logstash</option>
+                                    <option value="rabbitmq">🐰 RabbitMQ</option>
+                                    <option value="mongodb">🍃 MongoDB</option>
+                                    <option value="postgresql">🐘 PostgreSQL</option>
+                                    <option value="mysql">🐬 MySQL</option>
+                                    <option value="redis">❤️ Redis</option>
+                                    <option value="memcached">💾 Memcached</option>
+                                    <option value="nginx">🔌 Nginx</option>
+                                    <option value="apache">🔺 Apache</option>
+                                    <option value="nodejs">🟩 Node.js</option>
+                                    <option value="python">🐍 Python</option>
+                                    <option value="golang">🐹 Go (Golang)</option>
+                                    <option value="rust">🦀 Rust</option>
+                                    <option value="java">☕ Java</option>
+                                    <option value="dotnet">⚫ .NET</option>
+                                    <option value="php">🐘 PHP</option>
+                                    <option value="laravel">🔴 Laravel</option>
+                                    <option value="symfony">⭐ Symfony</option>
+                                    <option value="django">🟢 Django</option>
+                                    <option value="fastapi">⚡ FastAPI</option>
+                                    <option value="flask">🔷 Flask</option>
+                                    <option value="express">🚀 Express.js</option>
+                                    <option value="react">⚛️ React</option>
+                                    <option value="vue">💚 Vue.js</option>
+                                    <option value="angular">🔴 Angular</option>
+                                    <option value="svelte">🔥 Svelte</option>
+                                    <option value="nextjs">⬛ Next.js</option>
+                                    <option value="nuxt">🟢 Nuxt</option>
+                                    <option value="gatsby">💜 Gatsby</option>
+                                    <option value="remix">🎵 Remix</option>
+                                    <option value="rust-web">🚀 Rocket (Rust Web)</option>
+                                    <option value="spring">🍃 Spring Boot</option>
+                                    <option value="quarkus">🔴 Quarkus</option>
+                                    <option value="grpc">🔷 gRPC</option>
+                                    <option value="graphql">🔴 GraphQL</option>
+                                    <option value="rest">📡 REST API</option>
+                                    <option value="socket-io">🔌 Socket.IO</option>
+                                    <option value="websocket">🌐 WebSocket</option>
+                                    <option value="oauth">🔐 OAuth 2.0</option>
+                                    <option value="openid">🔑 OpenID Connect</option>
+                                    <option value="jwt">🎫 JSON Web Tokens</option>
+                                </select>
+                            </div>
+                            <div id="websiteInfo" style="background: #0f1a2e; border: 1px solid #1a3a4e; border-radius: 4px; padding: 10px; margin-top: 10px; display: none;">
+                                <p style="font-size: 10px; color: #4f9fff; margin: 0 0 6px 0; font-weight: bold;">📡 اطلاعات سایت:</p>
+                                <p style="font-size: 9px; color: #88ccff; margin: 4px 0;"><strong>نام:</strong> <span id="websiteName"></span></p>
+                                <p style="font-size: 9px; color: #88ccff; margin: 4px 0;"><strong>دامنه:</strong> <span id="websiteDomain"></span></p>
+                                <p style="font-size: 9px; color: #88ccff; margin: 4px 0;"><strong>URLها:</strong></p>
+                                <div id="websiteURLs" style="font-size: 8px; color: #66bbff; margin-left: 10px; font-family: monospace;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="checkbox-card" style="background: transparent; border: none; margin-bottom: 15px;">
+                        <div class="checkbox-header">
+                            <h3>📊 اسکن موازی رنج‌ها</h3>
+                            <label class="switch">
+                                <input type="checkbox" id="parallelRanges" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <p style="font-size: 12px; color: #a0a0a0; margin-top: 8px;">از تمام 26 رنج به صورت همزمان IP بگیر بجای ترتیبی</p>
+                    </div>
+
+                    <div class="checkbox-card" style="background: transparent; border: none; margin-bottom: 15px;">
+                        <div class="checkbox-header">
+                            <h3>🎯 تقسیم بندی رنج‌ها</h3>
+                            <label class="switch">
+                                <input type="checkbox" id="rangeSegment" checked onchange="toggleRangeSegment()">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div id="segOpt" class="options-content active">
+                            <div class="input-group">
+                                <label>تقسیم هر رنج</label>
+                                <input type="number" id="segments" value="4" min="1" max="10">
+                            </div>
+                        </div>
+                        <p style="font-size: 12px; color: #a0a0a0; margin-top: 8px;">رنج‌ها رو بندی کن و بهترین قسمت‌ها رو اسکن کن</p>
+                    </div>
+
+                    <div class="checkbox-card" style="background: transparent; border: none; margin-bottom: 15px;">
+                        <div class="checkbox-header">
+                            <h3>⬇️ تست دانلود</h3>
+                            <label class="switch">
+                                <input type="checkbox" id="dl" onchange="toggleDL()">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div id="dlOpt" class="options-content">
+                            <div class="input-group">
+                                <label>حجم (KB)</label>
+                                <input type="number" id="dlSize" value="500">
+                            </div>
+                            <div class="input-group">
+                                <label>حداقل سرعت</label>
+                                <input type="number" id="minDL" value="100">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="checkbox-card" style="background: transparent; border: none;">
+                        <div class="checkbox-header">
+                            <h3>⬆️ تست آپلود</h3>
+                            <label class="switch">
+                                <input type="checkbox" id="ul" onchange="toggleUL()">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div id="ulOpt" class="options-content">
+                            <div class="input-group">
+                                <label>حجم (KB)</label>
+                                <input type="number" id="ulSize" value="500">
+                            </div>
+                            <div class="input-group">
+                                <label>حداقل سرعت</label>
+                                <input type="number" id="minUL" value="50">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="checkbox-card" style="background: transparent; border: none; margin-bottom: 15px;">
+                        <div class="checkbox-header">
+                            <h3>📊 تست Jitter (نوسان Ping)</h3>
+                            <label class="switch">
+                                <input type="checkbox" id="jitterTest">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <p style="font-size: 12px; color: #a0a0a0; margin-top: 8px;">اندازه‌گیری نوسان تاخیر برای بررسی پایداری اتصال</p>
+                        <div style="margin-top: 12px;">
+                            <div class="input-group">
+                                <label>حداکثر Jitter قابل قبول (ms)</label>
+                                <input type="number" id="maxJitter" value="50" min="0" max="1000" style="width: 100%;">
+                            </div>
+                            <p style="font-size: 11px; color: #888; margin-top: 6px;">تنها IP‌های با جیتر کمتر از این مقدار نمایش داده می‌شوند (0 = بدون فیلتر)</p>
+                        </div>
+                    </div>
+
+                    <div class="checkbox-card" style="background: transparent; border: none; margin-bottom: 15px;">
+                        <div class="checkbox-header">
+                            <h3>🎯 اسکن یک رنج</h3>
+                            <label class="switch">
+                                <input type="checkbox" id="scanSingleRange" unchecked onchange="toggleSingleRangeMode()">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div id="singleRangeContent" style="display: none; margin-top: 12px;">
+                            <div class="input-group">
+                                <label>نام رنج یا دو عدد اول</label>
+                                <input type="text" id="singleRangeInput" placeholder="مثال: 104.3 یا 104.16" style="font-family: monospace; width: 100%;">
+                            </div>
+                            <div style="background: #1a2e1a; border: 1px solid #2a3a2a; border-radius: 4px; padding: 8px; margin-top: 8px;">
+                                <p style="font-size: 10px; color: #77dd77; margin: 0 0 6px 0; font-weight: bold;">📝 نمونه‌ها:</p>
+                                <div style="font-size: 9px; color: #99dd99; font-family: monospace; line-height: 1.8;">
+                                    <div>104.3 → تنها 104.3.x.x اسکن شود</div>
+                                    <div>172.16 → تنها 172.16.x.x اسکن شود</div>
+                                    <div>1.1 → تنها 1.1.x.x اسکن شود</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="checkbox-card" style="background: transparent; border: none; margin-bottom: 15px;">
+                        <div class="checkbox-header">
+                            <h3>🚀 الگوریتم پیشرفته (Smart Range Scanning)</h3>
+                            <label class="switch">
+                                <input type="checkbox" id="advancedAlgorithm" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div style="margin-top: 12px;">
+                            <p style="font-size: 11px; color: #888; margin: 0 0 8px 0;">🎯 نحوه کار:</p>
+                            <p style="font-size: 11px; color: #aaa; margin: 4px 0;">• رنج‌های مختلف را همزمان اسکن کن</p>
+                            <p style="font-size: 11px; color: #aaa; margin: 4px 0;">• بعد از 200 آی‌پی، رنج‌های ناموفق را کنار بگذار</p>
+                            <p style="font-size: 11px; color: #aaa; margin: 4px 0;">• فقط رنج‌های موفق را پیش‌برو</p>
+                            <p style="font-size: 11px; color: #aaa; margin: 4px 0;">⚠️ نتیجه: سریع‌تر، مصرف کم‌تر</p>
+                            <div class="input-group" style="margin-top: 10px;">
+                                <label>تعداد آی‌پی هر رنج</label>
+                                <input type="number" id="ipPerRange" value="300" min="10" max="500">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="checkbox-card" style="background: transparent; border: none; margin-bottom: 15px;">
+                        <div class="checkbox-header">
+                            <h3>🔗 تست V2Ray</h3>
+                            <label class="switch">
+                                <input type="checkbox" id="v2rayTest" unchecked onchange="toggleV2RayOptions()">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div id="v2rayOptions" style="display: none; margin-top: 12px;">
+                            <div class="input-group">
+                                <label>آدرس V2Ray (نمونه: 127.0.0.1:1080)</label>
+                                <input type="text" id="v2rayAddr" placeholder="127.0.0.1:1080" value="127.0.0.1:1080">
+                            </div>
+                            <div class="input-group">
+                                <label>پروتکل</label>
+                                <select id="v2rayProtocol" style="width: 100%; padding: 8px; background: #2a2a3e; color: #fff; border: 1px solid #444; border-radius: 4px;">
+                                    <option value="socks5">SOCKS5</option>
+                                    <option value="http">HTTP</option>
+                                </select>
+                            </div>
+                            <p style="font-size: 11px; color: #888; margin-top: 8px;">⚠️ V2Ray باید در این آدرس فعال باشد</p>
+                        </div>
+                    </div>
+
+                    <div id="advancedStatsPanel" style="background: #1a1a2e; border-left: 3px solid #f59e0b; padding: 12px; border-radius: 4px; margin-bottom: 15px; display: none;">
+                        <h4 style="margin: 0 0 10px 0; font-size: 12px; color: #f59e0b;">📊 آمار الگوریتم پیشرفته</h4>
+                        <div style="font-size: 10px; color: #aaa; line-height: 1.6;">
+                            <div>رنج‌های فعال: <span id="activeRangeCount">0</span></div>
+                            <div>تل‌تر شده: <span id="testedCount">0</span> / <span id="totalCount">0</span></div>
+                            <div>رنج‌های حذف‌شده: <span id="removedRanges">0</span></div>
+                        </div>
+                    </div>
+
+                    <div class="checkbox-card" style="background: transparent; border: none; margin-bottom: 15px;">
+                        <div class="checkbox-header">
+                            <h3>🔍 فیلتر IP‌های ضعیف</h3>
+                            <label class="switch">
+                                <input type="checkbox" id="strictTest">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <p style="font-size: 12px; color: #a0a0a0; margin-top: 8px;">فقط IP‌های با ping بسیار کم را نمایش بده (کاهش تعداد اما بهتر بودن کیفیت)</p>
+                    </div>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr; gap: 8px;">
+                <button id="btn" class="btn btn-success" onclick="scan()">شروع اسکن</button>
+                <div id="pauseControls" style="display: none; grid-template-columns: 1fr 1fr; gap: 8px;">
+                    <button id="resumeBtn" class="btn" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: #fff; box-shadow: 0 4px 20px rgba(239, 68, 68, 0.3);" onclick="resumeScan(event)">▶️ ادامه</button>
+                    <button id="restartBtn" class="btn" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: #fff; box-shadow: 0 4px 20px rgba(239, 68, 68, 0.3);" onclick="restartScan(event)">🔄 شروع مجدد</button>
+                </div>
+                <button id="testBtn" class="btn" style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.5) 0%, rgba(118, 75, 162, 0.5) 100%); color: #fff; padding: 10px; font-size: 14px; margin-top: 8px; border-radius: 8px;" onclick="openTestSingle()">🧪 تست یک IP</button>
+            </div>
+        </div>
+
+        <div id="testSingleCard" class="card hidden" style="margin-top: 15px;">
+            <h2>🧪 تست یک IP</h2>
+            <div class="settings-grid">
+                <div class="input-group">
+                    <label>آدرس IP</label>
+                    <input type="text" id="singleIP" placeholder="مثال: 104.16.132.1">
+                </div>
+                <div class="input-group">
+                    <label>Timeout (ms)</label>
+                    <input type="number" id="singleTimeout" value="6000">
+                </div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                <button class="btn btn-primary" onclick="testSingleIP()">تست</button>
+                <button class="btn btn-danger" onclick="closeSingleTest()">بستن</button>
+            </div>
+            <div id="singleResult" style="margin-top: 15px;"></div>
+        </div>
+
+        <div id="prog" class="card progress-card">
+            <div class="progress-bar-container">
+                <div id="bar" class="progress-bar" style="width:0%">
+                    <span id="pct">0%</span>
+                </div>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="number" id="tot">0</div>
+                    <div class="label">کل</div>
+                </div>
+                <div class="stat-box">
+                    <div class="number" id="tst">0</div>
+                    <div class="label">تست شده</div>
+                </div>
+                <div class="stat-box">
+                    <div class="number" id="ok">0</div>
+                    <div class="label">موفق</div>
+                </div>
+                <div class="stat-box">
+                    <div class="number" id="bad">0</div>
+                    <div class="label">ناموفق</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="results-header">
+                <h2>نتایج: <span id="cnt">0</span></h2>
+                <div class="btn-group">
+                    <button class="btn-sm" style="background: #8b5cf6; color: #fff;" onclick="cpAll()">کپی IP</button>
+                    <button class="btn-sm" style="background: #ec4899; color: #fff;" onclick="cpAllConfigs()">📋 کپی کانفیگ‌ها</button>
+                    <button class="btn-sm" style="background: #10b981; color: #fff;" onclick="sortBetter()">⭐ بهتری</button>
+                    <button class="btn-sm" style="background: #3b82f6; color: #fff;" onclick="dwn()">دانلود</button>
+                </div>
+            </div>
+            <div id="list">
+                <div class="empty-state">
+                    <div class="icon">🎯</div>
+                    <p>آماده برای شروع</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Custom Profile Modal -->
+<div id="customModal" class="modal-overlay" onclick="closeCustomProfile(event)" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(8px); z-index: 1000; display: flex; align-items: center; justify-content: center;">
+    <div class="card" style="width: 90%; max-width: 400px; margin: 0; padding: 25px; overflow-y: auto; max-height: 90vh;" onclick="event.stopPropagation();">
+        <h2 style="margin-top: 0;">⚙️ تنظیمات سفارشی</h2>
+        
+        <div class="settings-grid" style="grid-template-columns: 1fr;">
+            <div class="input-group">
+                <label>تعداد IP</label>
+                <input type="number" id="customNum" value="50">
+            </div>
+            <div class="input-group">
+                <label>Timeout (ms)</label>
+                <input type="number" id="customTime" value="6000">
+            </div>
+            <div class="input-group">
+                <label>Max Ping</label>
+                <input type="number" id="customPing" value="800">
+            </div>
+            <div class="input-group">
+                <label>همزمان</label>
+                <input type="number" id="customCon" value="10">
+            </div>
+            <div class="input-group">
+                <label>نتایج</label>
+                <input type="number" id="customMax" value="100">
+            </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 15px;">
+            <button class="btn btn-primary" onclick="applyCustomProfile()" style="width: 100%;">اعمال</button>
+            <button class="btn btn-danger" onclick="closeCustomProfile()" style="width: 100%;">بستن</button>
+        </div>
+    </div>
+</div>
+
+<script>
+var vlessConfig = '';
+var sc = false, st = false, rs = [];
+var smartQueue = [];
+var testedIPs = new Set();
+var currentIndex = 0; // برای ذخیره index اسکن
+var currentProc = null; // برای ذخیره تابع proc
+var useStrictTest = false; // برای تست دقیق IP‌ها (غیر فعال پیشفرض)
+var currentStrictTest = false; // متغیر جهانی برای strictTest در proc
+var globalAdvancedAlgorithm = false; // متغیر جهانی برای Advanced Algorithm
+
+// متغیرهای الگوریتم پیشرفته
+var rangeStats = {}; // {rangeIndex: {tested: 0, found: 0}}
+var activeRanges = []; // رنج‌های فعال برای الگوریتم پیشرفته
+var rangeIPCount = {}; // تعداد IP‌های تست شده از هر رنج
+
+// لیست سایت‌های تحت حمایت Cloudflare
+var cloudflareWebsites = {
+    'chatgpt': {
+        name: 'چت جی‌پی‌تی',
+        domain: 'api.openai.com',
+        urls: ['https://api.openai.com/v1/chat/completions'],
+        ranges: ['104.18.0.0/15', '172.64.0.0/13', '2606:4700:4700::/48']
+    },
+    'stackoverflow': {
+        name: 'پاسخ‌اسکت',
+        domain: 'stackoverflow.com',
+        urls: ['stackoverflow.com', 'api.stackoverflow.com'],
+        ranges: ['151.101.0.0/16', '199.232.0.0/16']
+    },
+    'wikipedia': {
+        name: 'دانشنامه',
+        domain: 'wikipedia.org',
+        urls: ['www.wikipedia.org', 'en.wikipedia.org'],
+        ranges: ['104.18.0.0/15', '2606:4700:4700::/48']
+    },
+    'cloudflare': {
+        name: 'کلاودفلر',
+        domain: 'cloudflare.com',
+        urls: ['www.cloudflare.com', 'api.cloudflare.com'],
+        ranges: ['104.16.0.0/12', '2400:cb00::/32']
+    },
+    'github': {
+        name: 'گیت‌هاب',
+        domain: 'github.com',
+        urls: ['github.com', 'api.github.com'],
+        ranges: ['140.82.112.0/20', '143.55.64.0/20']
+    },
+    'discord': {
+        name: 'دیسکورد',
+        domain: 'discord.com',
+        urls: ['discord.com', 'api.discord.com'],
+        ranges: ['162.125.0.0/16', '184.164.128.0/17']
+    },
+    'notion': {
+        name: 'Notion',
+        domain: 'notion.so',
+        urls: ['www.notion.so', 'api.notion.com']
+    },
+    'figma': {
+        name: 'Figma',
+        domain: 'figma.com',
+        urls: ['www.figma.com', 'api.figma.com']
+    },
+    'slack': {
+        name: 'Slack',
+        domain: 'slack.com',
+        urls: ['https://slack.com', 'https://api.slack.com']
+    },
+    'stripe': {
+        name: 'Stripe',
+        domain: 'stripe.com',
+        urls: ['https://stripe.com', 'https://api.stripe.com']
+    },
+    'twitch': {
+        name: 'Twitch',
+        domain: 'twitch.tv',
+        urls: ['https://www.twitch.tv', 'https://api.twitch.tv']
+    },
+    'shopify': {
+        name: 'Shopify',
+        domain: 'shopify.com',
+        urls: ['https://www.shopify.com', 'https://api.shopify.com']
+    },
+    'asana': {
+        name: 'Asana',
+        domain: 'asana.com',
+        urls: ['https://asana.com', 'https://api.asana.com']
+    },
+    'jira': {
+        name: 'Jira',
+        domain: 'atlassian.net',
+        urls: ['https://jira.atlassian.net', 'https://api.atlassian.com']
+    },
+    'datadog': {
+        name: 'Datadog',
+        domain: 'datadoghq.com',
+        urls: ['https://www.datadoghq.com', 'https://api.datadoghq.com']
+    },
+    'sentry': {
+        name: 'Sentry',
+        domain: 'sentry.io',
+        urls: ['https://sentry.io', 'https://api.sentry.io']
+    },
+    'vercel': {
+        name: 'Vercel',
+        domain: 'vercel.com',
+        urls: ['https://vercel.com', 'https://api.vercel.com']
+    },
+    'netlify': {
+        name: 'Netlify',
+        domain: 'netlify.com',
+        urls: ['https://www.netlify.com', 'https://api.netlify.com']
+    },
+    'npm': {
+        name: 'NPM Registry',
+        domain: 'npmjs.com',
+        urls: ['https://www.npmjs.com', 'https://registry.npmjs.org']
+    },
+    'rubygems': {
+        name: 'RubyGems',
+        domain: 'rubygems.org',
+        urls: ['https://rubygems.org', 'https://api.rubygems.org']
+    },
+    'heroku': {
+        name: 'Heroku',
+        domain: 'heroku.com',
+        urls: ['https://www.heroku.com', 'https://api.heroku.com']
+    },
+    'digitalocean': {
+        name: 'DigitalOcean',
+        domain: 'digitalocean.com',
+        urls: ['https://www.digitalocean.com', 'https://api.digitalocean.com']
+    },
+    'linode': {
+        name: 'Linode',
+        domain: 'linode.com',
+        urls: ['https://www.linode.com', 'https://api.linode.com']
+    },
+    'vultr': {
+        name: 'Vultr',
+        domain: 'vultr.com',
+        urls: ['https://www.vultr.com', 'https://api.vultr.com']
+    },
+    'aws': {
+        name: 'AWS',
+        domain: 'aws.amazon.com',
+        urls: ['https://aws.amazon.com', 'https://api.aws.amazon.com']
+    },
+    'azure': {
+        name: 'Microsoft Azure',
+        domain: 'azure.microsoft.com',
+        urls: ['https://azure.microsoft.com', 'https://management.azure.com']
+    },
+    'gcp': {
+        name: 'Google Cloud',
+        domain: 'cloud.google.com',
+        urls: ['https://cloud.google.com', 'https://www.googleapis.com']
+    },
+    'bitbucket': {
+        name: 'Bitbucket',
+        domain: 'bitbucket.org',
+        urls: ['https://bitbucket.org', 'https://api.bitbucket.org']
+    },
+    'gitlab': {
+        name: 'GitLab',
+        domain: 'gitlab.com',
+        urls: ['https://gitlab.com', 'https://api.gitlab.com']
+    },
+    'docker': {
+        name: 'Docker Hub',
+        domain: 'docker.com',
+        urls: ['https://www.docker.com', 'https://hub.docker.com']
+    },
+    'kubernetes': {
+        name: 'Kubernetes',
+        domain: 'kubernetes.io',
+        urls: ['https://kubernetes.io', 'https://api.kubernetes.io']
+    },
+    'terraform': {
+        name: 'Terraform',
+        domain: 'terraform.io',
+        urls: ['https://www.terraform.io', 'https://app.terraform.io']
+    },
+    'hashicorp': {
+        name: 'HashiCorp',
+        domain: 'hashicorp.com',
+        urls: ['https://www.hashicorp.com', 'https://api.hashicorp.com']
+    },
+    'jenkins': {
+        name: 'Jenkins',
+        domain: 'jenkins.io',
+        urls: ['https://www.jenkins.io', 'https://plugins.jenkins.io']
+    },
+    'gitlab-ci': {
+        name: 'GitLab CI/CD',
+        domain: 'gitlab.com',
+        urls: ['https://gitlab.com', 'https://api.gitlab.com/v4']
+    },
+    'circleci': {
+        name: 'CircleCI',
+        domain: 'circleci.com',
+        urls: ['https://circleci.com', 'https://api.circleci.com']
+    },
+    'travis': {
+        name: 'Travis CI',
+        domain: 'travis-ci.com',
+        urls: ['https://www.travis-ci.com', 'https://api.travis-ci.com']
+    },
+    'github-actions': {
+        name: 'GitHub Actions',
+        domain: 'github.com',
+        urls: ['https://github.com', 'https://api.github.com/repos']
+    },
+    'docker-compose': {
+        name: 'Docker Compose',
+        domain: 'docker.com',
+        urls: ['https://docs.docker.com', 'https://hub.docker.com/api']
+    },
+    'prometheus': {
+        name: 'Prometheus',
+        domain: 'prometheus.io',
+        urls: ['https://prometheus.io', 'https://api.prometheus.io']
+    },
+    'grafana': {
+        name: 'Grafana',
+        domain: 'grafana.com',
+        urls: ['https://grafana.com', 'https://api.grafana.com']
+    },
+    'elasticsearch': {
+        name: 'Elasticsearch',
+        domain: 'elastic.co',
+        urls: ['https://www.elastic.co', 'https://api.elastic.co']
+    },
+    'kibana': {
+        name: 'Kibana',
+        domain: 'elastic.co',
+        urls: ['https://www.elastic.co/kibana', 'https://api.elastic.co/kibana']
+    },
+    'logstash': {
+        name: 'Logstash',
+        domain: 'elastic.co',
+        urls: ['https://www.elastic.co/logstash', 'https://api.elastic.co/logstash']
+    },
+    'rabbitmq': {
+        name: 'RabbitMQ',
+        domain: 'rabbitmq.com',
+        urls: ['https://www.rabbitmq.com', 'https://api.rabbitmq.com']
+    },
+    'mongodb': {
+        name: 'MongoDB',
+        domain: 'mongodb.com',
+        urls: ['https://www.mongodb.com', 'https://api.mongodb.com']
+    },
+    'postgresql': {
+        name: 'PostgreSQL',
+        domain: 'postgresql.org',
+        urls: ['https://www.postgresql.org', 'https://api.postgresql.org']
+    },
+    'mysql': {
+        name: 'MySQL',
+        domain: 'mysql.com',
+        urls: ['https://www.mysql.com', 'https://api.mysql.com']
+    },
+    'redis': {
+        name: 'Redis',
+        domain: 'redis.io',
+        urls: ['https://redis.io', 'https://api.redis.io']
+    },
+    'memcached': {
+        name: 'Memcached',
+        domain: 'memcached.org',
+        urls: ['https://www.memcached.org', 'https://api.memcached.org']
+    },
+    'nginx': {
+        name: 'Nginx',
+        domain: 'nginx.org',
+        urls: ['https://nginx.org', 'https://api.nginx.org']
+    },
+    'apache': {
+        name: 'Apache',
+        domain: 'apache.org',
+        urls: ['https://www.apache.org', 'https://api.apache.org']
+    },
+    'nodejs': {
+        name: 'Node.js',
+        domain: 'nodejs.org',
+        urls: ['https://nodejs.org', 'https://registry.npmjs.org']
+    },
+    'python': {
+        name: 'Python',
+        domain: 'python.org',
+        urls: ['https://www.python.org', 'https://pypi.org']
+    },
+    'golang': {
+        name: 'Go (Golang)',
+        domain: 'golang.org',
+        urls: ['https://golang.org', 'https://pkg.go.dev']
+    },
+    'rust': {
+        name: 'Rust',
+        domain: 'rust-lang.org',
+        urls: ['https://www.rust-lang.org', 'https://crates.io']
+    },
+    'java': {
+        name: 'Java',
+        domain: 'oracle.com',
+        urls: ['https://www.oracle.com/java', 'https://repo1.maven.org']
+    },
+    'dotnet': {
+        name: '.NET',
+        domain: 'microsoft.com',
+        urls: ['https://dotnet.microsoft.com', 'https://api.nuget.org']
+    },
+    'php': {
+        name: 'PHP',
+        domain: 'php.net',
+        urls: ['https://www.php.net', 'https://packagist.org']
+    },
+    'laravel': {
+        name: 'Laravel',
+        domain: 'laravel.com',
+        urls: ['https://laravel.com', 'https://packagist.org']
+    },
+    'symfony': {
+        name: 'Symfony',
+        domain: 'symfony.com',
+        urls: ['https://symfony.com', 'https://packagist.org']
+    },
+    'django': {
+        name: 'Django',
+        domain: 'djangoproject.com',
+        urls: ['https://www.djangoproject.com', 'https://pypi.org']
+    },
+    'fastapi': {
+        name: 'FastAPI',
+        domain: 'fastapi.tiangolo.com',
+        urls: ['https://fastapi.tiangolo.com', 'https://pypi.org/project/fastapi']
+    },
+    'flask': {
+        name: 'Flask',
+        domain: 'flask.palletsprojects.com',
+        urls: ['https://flask.palletsprojects.com', 'https://pypi.org/project/flask']
+    },
+    'express': {
+        name: 'Express.js',
+        domain: 'expressjs.com',
+        urls: ['https://expressjs.com', 'https://www.npmjs.com/package/express']
+    },
+    'react': {
+        name: 'React',
+        domain: 'react.dev',
+        urls: ['https://react.dev', 'https://www.npmjs.com/package/react']
+    },
+    'vue': {
+        name: 'Vue.js',
+        domain: 'vuejs.org',
+        urls: ['https://vuejs.org', 'https://www.npmjs.com/package/vue']
+    },
+    'angular': {
+        name: 'Angular',
+        domain: 'angular.io',
+        urls: ['https://angular.io', 'https://www.npmjs.com/package/angular']
+    },
+    'svelte': {
+        name: 'Svelte',
+        domain: 'svelte.dev',
+        urls: ['https://svelte.dev', 'https://www.npmjs.com/package/svelte']
+    },
+    'nextjs': {
+        name: 'Next.js',
+        domain: 'nextjs.org',
+        urls: ['https://nextjs.org', 'https://www.npmjs.com/package/next']
+    },
+    'nuxt': {
+        name: 'Nuxt',
+        domain: 'nuxt.com',
+        urls: ['https://nuxt.com', 'https://www.npmjs.com/package/nuxt']
+    },
+    'gatsby': {
+        name: 'Gatsby',
+        domain: 'gatsbyjs.com',
+        urls: ['https://www.gatsbyjs.com', 'https://www.npmjs.com/package/gatsby']
+    },
+    'remix': {
+        name: 'Remix',
+        domain: 'remix.run',
+        urls: ['https://remix.run', 'https://www.npmjs.com/package/remix']
+    },
+    'rust-web': {
+        name: 'Rocket (Rust Web)',
+        domain: 'rocket.rs',
+        urls: ['https://rocket.rs', 'https://crates.io/crates/rocket']
+    },
+    'spring': {
+        name: 'Spring Boot',
+        domain: 'spring.io',
+        urls: ['https://spring.io', 'https://repo1.maven.org']
+    },
+    'quarkus': {
+        name: 'Quarkus',
+        domain: 'quarkus.io',
+        urls: ['https://quarkus.io', 'https://repo1.maven.org']
+    },
+    'grpc': {
+        name: 'gRPC',
+        domain: 'grpc.io',
+        urls: ['https://grpc.io', 'https://pkg.go.dev']
+    },
+    'graphql': {
+        name: 'GraphQL',
+        domain: 'graphql.org',
+        urls: ['https://graphql.org', 'https://www.npmjs.com/package/graphql']
+    },
+    'rest': {
+        name: 'REST API',
+        domain: 'restfulapi.net',
+        urls: ['https://restfulapi.net', 'https://www.jsonapi.org']
+    },
+    'socket-io': {
+        name: 'Socket.IO',
+        domain: 'socket.io',
+        urls: ['https://socket.io', 'https://www.npmjs.com/package/socket.io']
+    },
+    'websocket': {
+        name: 'WebSocket',
+        domain: 'html.spec.whatwg.org',
+        urls: ['https://html.spec.whatwg.org/multipage/web-sockets.html']
+    },
+    'oauth': {
+        name: 'OAuth 2.0',
+        domain: 'tools.ietf.org',
+        urls: ['https://tools.ietf.org/html/rfc6749']
+    },
+    'openid': {
+        name: 'OpenID Connect',
+        domain: 'openid.net',
+        urls: ['https://openid.net/connect', 'https://www.npmjs.com/package/passport-openidconnect']
+    },
+    'jwt': {
+        name: 'JSON Web Tokens',
+        domain: 'jwt.io',
+        urls: ['https://jwt.io', 'https://www.npmjs.com/package/jsonwebtoken']
+    }
+};
+
+var rg = [
+    // رنج های 104 - اولویت اول (7 رنج)
+    '104.16.0.0/13',
+    '104.24.0.0/14',
+    '104.17.0.0/16',
+    '104.18.0.0/15',
+    '104.20.0.0/14',
+    '104.21.0.0/16',
+    '104.22.0.0/15',
+    
+    // 103 رنج ها (3 رنج)
+    '103.21.244.0/22',
+    '103.22.200.0/22',
+    '103.31.4.0/22',
+    
+    // 108-199 رنج ها
+    '108.162.192.0/18',
+    '131.0.72.0/22',
+    '141.101.64.0/18',
+    '141.98.251.0/24',
+    '141.98.252.0/24',
+    '141.98.253.0/24',
+    '162.158.0.0/15',
+    '162.158.56.0/24',
+    '162.158.57.0/24',
+    '162.158.58.0/24',
+    '162.158.59.0/24',
+    '162.158.60.0/24',
+    '162.158.61.0/24',
+    '162.158.62.0/24',
+    '162.158.63.0/24',
+    '162.158.64.0/21',
+    '162.158.72.0/24',
+    '162.158.73.0/24',
+    '162.158.74.0/24',
+    '162.158.75.0/24',
+    '162.158.76.0/22',
+    '162.158.8.0/24',
+    '162.158.80.0/24',
+    '162.158.81.0/24',
+    '162.158.82.0/24',
+    '162.158.84.0/22',
+    '162.158.88.0/24',
+    '162.158.89.0/24',
+    '162.158.9.0/24',
+    '162.158.90.0/24',
+    '162.158.91.0/24',
+    '162.158.92.0/24',
+    '162.158.93.0/24',
+    '162.158.94.0/24',
+    '162.158.95.0/24',
+    '162.158.96.0/24',
+    '162.158.97.0/24',
+    '162.158.98.0/24',
+    '162.158.99.0/24',
+    '162.159.0.0/20',
+    '162.159.128.0/17',
+    '162.159.192.0/22',
+    '162.159.240.0/20',
+    '162.159.32.0/20',
+    '162.159.48.0/20',
+    '162.159.64.0/20',
+    '162.251.82.0/24',
+    '162.44.104.0/22',
+    '164.38.155.0/24',
+    '167.1.148.0/24',
+    '167.1.150.0/24',
+    '168.100.6.0/24',
+    '170.114.45.0/24',
+    '170.114.46.0/24',
+    '170.114.52.0/24',
+    
+    // 172 رنج ها (رنج‌های بزرگ و گسترده)
+    '172.64.0.0/16',
+    '172.64.128.0/20',
+    '172.64.144.0/24',
+    '172.64.145.0/24',
+    '172.64.146.0/24',
+    '172.64.147.0/24',
+    '172.64.148.0/24',
+    '172.64.149.0/24',
+    '172.64.150.0/24',
+    '172.64.151.0/24',
+    '172.64.152.0/24',
+    '172.64.153.0/24',
+    '172.64.154.0/24',
+    '172.64.155.0/24',
+    '172.64.156.0/24',
+    '172.64.157.0/24',
+    '172.64.158.0/24',
+    '172.64.159.0/24',
+    '172.64.160.0/20',
+    '172.64.192.0/20',
+    '172.64.228.0/24',
+    '172.64.229.0/24',
+    '172.64.236.0/24',
+    '172.64.237.0/24',
+    '172.64.238.0/24',
+    '172.64.239.0/24',
+    '172.64.240.0/20',
+    '172.64.32.0/20',
+    '172.64.48.0/20',
+    '172.64.80.0/20',
+    '172.64.96.0/20',
+    '172.65.0.0/19',
+    '172.65.112.0/20',
+    '172.65.128.0/20',
+    '172.65.144.0/20',
+    '172.65.16.0/20',
+    '172.65.160.0/20',
+    '172.65.176.0/20',
+    '172.65.192.0/20',
+    '172.65.208.0/20',
+    '172.65.224.0/20',
+    '172.65.240.0/20',
+    '172.65.32.0/20',
+    '172.65.48.0/20',
+    '172.65.64.0/20',
+    '172.65.80.0/20',
+    '172.65.96.0/20',
+    '172.66.0.0/22',
+    '172.66.40.0/21',
+    '172.67.0.0/20',
+    '172.67.112.0/20',
+    '172.67.128.0/20',
+    '172.67.144.0/20',
+    '172.67.16.0/20',
+    '172.67.160.0/20',
+    '172.67.176.0/20',
+    '172.67.192.0/20',
+    '172.67.208.0/20',
+    '172.67.224.0/20',
+    '172.67.240.0/20',
+    '172.67.32.0/20',
+    '172.67.48.0/20',
+    '172.67.64.0/20',
+    '172.67.80.0/20',
+    '172.67.96.0/20',
+    '172.68.0.0/22',
+    '172.68.100.0/22',
+    '172.68.104.0/22',
+    '172.68.108.0/22',
+    '172.68.112.0/24',
+    '172.68.113.0/24',
+    '172.68.114.0/24',
+    '172.68.115.0/24',
+    '172.68.116.0/24',
+    '172.68.117.0/24',
+    '172.68.118.0/24',
+    '172.68.119.0/24',
+    '172.68.12.0/22',
+    '172.68.120.0/23',
+    '172.68.123.0/24',
+    '172.68.124.0/23',
+    '172.68.126.0/24',
+    '172.68.127.0/24',
+    '172.68.128.0/24',
+    '172.68.129.0/24',
+    '172.68.130.0/24',
+    '172.68.131.0/24',
+    '172.68.132.0/24',
+    '172.68.133.0/24',
+    '172.68.134.0/24',
+    '172.68.135.0/24',
+    '172.68.136.0/22',
+    '172.68.16.0/21',
+    '172.68.160.0/24',
+    '172.68.161.0/24',
+    '172.68.162.0/24',
+    '172.68.163.0/24',
+    '172.68.164.0/23',
+    '172.68.166.0/23',
+    '172.68.168.0/24',
+    '172.68.169.0/24',
+    '172.68.170.0/24',
+    '172.68.171.0/24',
+    '172.68.172.0/22',
+    '172.68.176.0/24',
+    '172.68.177.0/24',
+    '172.68.179.0/24',
+    '172.68.180.0/22',
+    '172.68.184.0/22',
+    '172.68.188.0/24',
+    '172.68.189.0/24',
+    '172.68.190.0/24',
+    '172.68.191.0/24',
+    '172.68.196.0/22',
+    '172.68.200.0/24',
+    '172.68.201.0/24',
+    '172.68.202.0/24',
+    '172.68.203.0/24',
+    '172.68.204.0/23',
+    '172.68.206.0/24',
+    '172.68.207.0/24',
+    '172.68.208.0/24',
+    '172.68.209.0/24',
+    '172.68.210.0/24',
+    '172.68.211.0/24',
+    '172.68.212.0/22',
+    '172.68.216.0/24',
+    '172.68.217.0/24',
+    '172.68.218.0/24',
+    '172.68.219.0/24',
+    '172.68.220.0/23',
+    '172.68.222.0/24',
+    '172.68.223.0/24',
+    '172.68.224.0/22',
+    '172.68.228.0/23',
+    '172.68.230.0/24',
+    '172.68.231.0/24',
+    '172.68.232.0/22',
+    '172.68.236.0/22',
+    '172.68.24.0/22',
+    '172.68.240.0/22',
+    '172.68.244.0/22',
+    '172.68.248.0/24',
+    '172.68.249.0/24',
+    '172.68.250.0/24',
+    '172.68.251.0/24',
+    '172.68.252.0/24',
+    '172.68.253.0/24',
+    '172.68.255.0/24',
+    '172.68.4.0/24',
+    '172.68.5.0/24',
+    '172.68.32.0/22',
+    '172.68.36.0/23',
+    '172.68.38.0/24',
+    '172.68.39.0/24',
+    '172.68.40.0/22',
+    '172.68.45.0/24',
+    '172.68.46.0/24',
+    '172.68.47.0/24',
+    '172.68.48.0/22',
+    '172.68.52.0/22',
+    '172.68.56.0/24',
+    '172.68.57.0/24',
+    '172.68.58.0/24',
+    '172.68.59.0/24',
+    '172.68.60.0/22',
+    '172.68.64.0/24',
+    '172.68.65.0/24',
+    '172.68.66.0/24',
+    '172.68.67.0/24',
+    '172.68.68.0/22',
+    '172.68.72.0/23',
+    '172.68.74.0/24',
+    '172.68.75.0/24',
+    '172.68.76.0/23',
+    '172.68.78.0/24',
+    '172.68.79.0/24',
+    '172.68.8.0/22',
+    '172.68.80.0/24',
+    '172.68.81.0/24',
+    '172.68.83.0/24',
+    '172.68.84.0/22',
+    '172.68.88.0/24',
+    '172.68.89.0/24',
+    '172.68.90.0/24',
+    '172.68.91.0/24',
+    '172.68.92.0/24',
+    '172.68.93.0/24',
+    '172.68.94.0/24',
+    '172.68.95.0/24',
+    '172.68.96.0/24',
+    '172.68.97.0/24',
+    '172.68.98.0/24',
+    '172.68.99.0/24',
+    '172.69.0.0/23',
+    '172.69.100.0/24',
+    '172.69.101.0/24',
+    '172.69.102.0/24',
+    '172.69.103.0/24',
+    '172.69.105.0/24',
+    '172.69.106.0/24',
+    '172.69.107.0/24',
+    '172.69.108.0/23',
+    '172.69.110.0/24',
+    '172.69.111.0/24',
+    '172.69.112.0/22',
+    '172.69.116.0/22',
+    '172.69.12.0/24',
+    '172.69.124.0/22',
+    '172.69.128.0/22',
+    '172.69.13.0/24',
+    '172.69.132.0/24',
+    '172.69.133.0/24',
+    '172.69.134.0/24',
+    '172.69.135.0/24',
+    '172.69.136.0/22',
+    '172.69.14.0/24',
+    '172.69.140.0/22',
+    '172.69.144.0/22',
+    '172.69.15.0/24',
+    '172.69.156.0/24',
+    '172.69.157.0/24',
+    '172.69.158.0/24',
+    '172.69.159.0/24',
+    '172.69.16.0/24',
+    '172.69.160.0/24',
+    '172.69.161.0/24',
+    '172.69.162.0/24',
+    '172.69.163.0/24',
+    '172.69.164.0/22',
+    '172.69.168.0/22',
+    '172.69.172.0/24',
+    '172.69.18.0/24',
+    '172.69.180.0/24',
+    '172.69.181.0/24',
+    '172.69.182.0/24',
+    '172.69.183.0/24',
+    '172.69.184.0/22',
+    '172.69.188.0/22',
+    '172.69.19.0/24',
+    '172.69.192.0/22',
+    '172.69.196.0/24',
+    '172.69.197.0/24',
+    '172.69.198.0/24',
+    '172.69.199.0/24',
+    '172.69.2.0/24',
+    '172.69.20.0/24',
+    '172.69.200.0/22',
+    '172.69.204.0/24',
+    '172.69.205.0/24',
+    '172.69.208.0/24',
+    '172.69.209.0/24',
+    '172.69.21.0/24',
+    '172.69.210.0/24',
+    '172.69.211.0/24',
+    '172.69.212.0/24',
+    '172.69.213.0/24',
+    '172.69.216.0/24',
+    '172.69.217.0/24',
+    '172.69.218.0/24',
+    '172.69.219.0/24',
+    '172.69.22.0/24',
+    '172.69.220.0/24',
+    '172.69.221.0/24',
+    '172.69.224.0/23',
+    '172.69.226.0/24',
+    '172.69.227.0/24',
+    '172.69.228.0/24',
+    '172.69.23.0/24',
+    '172.69.232.0/24',
+    '172.69.233.0/24',
+    '172.69.234.0/24',
+    '172.69.235.0/24',
+    '172.69.236.0/24',
+    '172.69.237.0/24',
+    '172.69.238.0/24',
+    '172.69.239.0/24',
+    '172.69.24.0/21',
+    '172.69.241.0/24',
+    '172.69.242.0/24',
+    '172.69.244.0/23',
+    '172.69.246.0/23',
+    '172.69.248.0/24',
+    '172.69.250.0/24',
+    '172.69.251.0/24',
+    '172.69.252.0/24',
+    '172.69.253.0/24',
+    '172.69.254.0/24',
+    '172.69.255.0/24',
+    '172.69.3.0/24',
+    '172.69.32.0/24',
+    '172.69.33.0/24',
+    '172.69.34.0/24',
+    '172.69.35.0/24',
+    '172.69.36.0/23',
+    '172.69.38.0/23',
+    '172.69.4.0/22',
+    '172.69.40.0/22',
+    '172.69.44.0/24',
+    '172.69.45.0/24',
+    '172.69.46.0/24',
+    '172.69.47.0/24',
+    '172.69.48.0/24',
+    '172.69.52.0/24',
+    '172.69.53.0/24',
+    '172.69.54.0/24',
+    '172.69.55.0/24',
+    '172.69.56.0/24',
+    '172.69.57.0/24',
+    '172.69.58.0/24',
+    '172.69.59.0/24',
+    '172.69.60.0/24',
+    '172.69.61.0/24',
+    '172.69.62.0/24',
+    '172.69.63.0/24',
+    '172.69.64.0/24',
+    '172.69.65.0/24',
+    '172.69.66.0/24',
+    '172.69.67.0/24',
+    '172.69.68.0/24',
+    '172.69.69.0/24',
+    '172.69.70.0/24',
+    '172.69.71.0/24',
+    '172.69.72.0/22',
+    '172.69.76.0/23',
+    '172.69.78.0/24',
+    '172.69.79.0/24',
+    '172.69.8.0/22',
+    '172.69.80.0/22',
+    '172.69.84.0/24',
+    '172.69.88.0/22',
+    '172.69.92.0/24',
+    '172.69.96.0/24',
+    '172.69.97.0/24',
+    '172.70.0.0/19',
+    '172.71.0.0/24',
+    '172.83.72.0/24',
+    '172.83.73.0/24',
+    '172.83.76.0/24',
+    
+    // 173 رنج ها
+    '173.245.48.0/20',
+    '173.245.49.0/24',
+    '173.245.54.0/24',
+    '173.245.58.0/24',
+    '173.245.59.0/24',
+    '173.245.60.0/23',
+    '173.245.63.0/24',
+    
+    // 174-199 رنج ها
+    '174.136.134.0/24',
+    '176.126.206.0/23',
+    '185.109.21.0/24',
+    '185.122.0.0/24',
+    '185.135.9.0/24',
+    '185.148.104.0/24',
+    '185.148.105.0/24',
+    '185.148.106.0/24',
+    '185.148.107.0/24',
+    '185.162.228.0/23',
+    '185.162.230.0/23',
+    '185.170.166.0/24',
+    '185.173.35.0/24',
+    '185.174.138.0/24',
+    '185.176.24.0/24',
+    '185.176.26.0/24',
+    '185.18.250.0/24',
+    '185.193.28.0/23',
+    '185.193.30.0/23',
+    '185.201.139.0/24',
+    '185.207.92.0/24',
+    '185.209.154.0/24',
+    '185.212.144.0/24',
+    '185.213.240.0/24',
+    '185.213.243.0/24',
+    '185.221.160.0/24',
+    '185.234.22.0/24',
+    '185.238.228.0/24',
+    '185.244.106.0/24',
+    '185.38.135.0/24',
+    '185.59.218.0/24',
+    '185.67.124.0/24',
+    '185.7.190.0/23',
+    '185.72.49.0/24',
+    '188.114.96.0/24',
+    '188.114.97.0/24',
+    '188.114.98.0/24',
+    '188.114.99.0/24',
+    '188.114.100.0/24',
+    '188.114.102.0/24',
+    '188.114.103.0/24',
+    '188.114.106.0/23',
+    '188.114.108.0/24',
+    '188.114.111.0/24',
+    '188.244.122.0/24',
+    '188.42.88.0/24',
+    '188.42.89.0/24',
+    '190.93.240.0/20',
+    '190.93.244.0/22',
+    '191.101.251.0/24',
+    '192.133.11.0/24',
+    '192.65.217.0/24',
+    '193.16.63.0/24',
+    '193.17.206.0/24',
+    '193.188.14.0/24',
+    '193.227.99.0/24',
+    '193.67.144.0/24',
+    '193.9.49.0/24',
+    '194.1.194.0/24',
+    '194.152.44.0/24',
+    '194.169.194.0/24',
+    '194.36.216.0/24',
+    '194.36.217.0/24',
+    '194.36.218.0/24',
+    '194.36.219.0/24',
+    '194.36.49.0/24',
+    '194.36.55.0/24',
+    '194.40.240.0/24',
+    '194.40.241.0/24',
+    '194.53.53.0/24',
+    '194.87.58.0/23',
+    '195.137.167.0/24',
+    '195.242.122.0/23',
+    '195.245.221.0/24',
+    '195.85.23.0/24',
+    '195.85.59.0/24',
+    '196.13.241.0/24',
+    '196.207.45.0/24',
+    '197.234.240.0/22',
+    '197.234.240.0/24',
+    '197.234.241.0/24',
+    '197.234.242.0/24',
+    '198.217.251.0/24',
+    '198.41.128.0/24',
+    '198.41.129.0/24',
+    '198.41.130.0/24',
+    '198.41.132.0/22',
+    '198.41.136.0/22',
+    '198.41.144.0/22',
+    '198.41.148.0/22',
+    '198.41.148.0/24',
+    '198.41.152.0/22',
+    '198.41.192.0/21',
+    '198.41.200.0/21',
+    '198.41.208.0/23',
+    '198.41.211.0/24',
+    '198.41.212.0/24',
+    '198.41.214.0/23',
+    '198.41.216.0/24',
+    '198.41.217.0/24',
+    '198.41.218.0/24',
+    '198.41.219.0/24',
+    '198.41.220.0/23',
+    '198.41.222.0/24',
+    '198.41.223.0/24',
+    '198.41.228.0/22',
+    '198.41.232.0/23',
+    '198.41.234.0/24',
+    '198.41.236.0/22',
+    '198.41.240.0/24',
+    '198.41.241.0/24',
+    '198.41.242.0/24',
+    '198.41.243.0/24',
+    '198.41.245.0/24',
+    '198.41.246.0/23',
+    '198.41.248.0/23',
+    '198.41.250.0/24',
+    '198.41.251.0/24',
+    '198.41.252.0/24',
+    '198.41.253.0/24',
+    '198.41.254.0/24',
+    '198.41.255.0/24',
+    '198.96.214.0/24',
+    '199.181.197.0/24',
+    '199.212.90.0/24',
+    '199.27.128.0/22',
+    '199.27.132.0/24',
+    '199.27.134.0/23',
+    '199.60.103.0/24',
+    '202.82.250.0/24',
+    '203.107.173.0/24',
+    '203.13.32.0/24',
+    '203.17.126.0/24',
+    '203.19.222.0/24',
+    '203.193.21.0/24',
+    '203.22.223.0/24',
+    '203.23.103.0/24',
+    '203.23.104.0/24',
+    '203.23.106.0/24',
+    '203.24.102.0/24',
+    '203.24.103.0/24',
+    '203.24.108.0/24',
+    '203.24.109.0/24',
+    '203.28.8.0/24',
+    '203.28.9.0/24',
+    '203.29.52.0/24',
+    '203.29.53.0/24',
+    '203.29.54.0/23',
+    '203.30.188.0/22',
+    '203.32.120.0/23',
+    '203.34.28.0/24',
+    '203.34.80.0/24',
+    '203.55.107.0/24',
+    '203.89.5.0/24',
+    '204.209.72.0/24',
+    '204.209.73.0/24',
+    '204.62.141.0/24',
+    '204.68.111.0/24',
+    '205.233.181.0/24',
+    '206.196.23.0/24',
+    '207.189.149.0/24',
+    '208.100.60.0/24',
+    '212.110.134.0/23',
+    '212.239.86.0/24',
+    '212.24.127.0/24',
+    '216.116.134.0/24',
+    '216.120.180.0/23',
+    '45.33.32.0/20',
+    '45.33.48.0/20',
+    '45.80.48.0/22'
+];
+
+function loadVless() {
+    var t = document.getElementById('vlessCfg').value.trim();
+    if (t === '') {
+        showMsg('لطفا کانفیگ VLESS وارد کنید', 'error');
+        return;
+    }
+    if (!t.startsWith('vless://')) {
+        showMsg('فرمت کانفیگ VLESS صحیح نیست', 'error');
+        return;
+    }
+    vlessConfig = t;
+    showMsg('✅ کانفیگ VLESS بارگذاری شد', 'success');
+    document.getElementById('operatorPanel').classList.remove('hidden');
+}
+
+function setProfileMCI() {
+    document.getElementById('num').value = 200;
+    document.getElementById('time').value = 6000;
+    document.getElementById('ping').value = 1000;
+    document.getElementById('con').value = 30;
+    document.getElementById('max').value = 100;
+    document.getElementById('panel').classList.remove('hidden');
+    showToast('✅ پروفایل همراه اول فعال شد');
+}
+
+function setProfileIrancell() {
+    document.getElementById('num').value = 200;
+    document.getElementById('time').value = 5500;
+    document.getElementById('ping').value = 700;
+    document.getElementById('con').value = 30;
+    document.getElementById('max').value = 90;
+    document.getElementById('panel').classList.remove('hidden');
+    showToast('✅ پروفایل ایرانسل فعال شد');
+}
+
+function setProfileRightel() {
+    document.getElementById('num').value = 200;
+    document.getElementById('time').value = 5000;
+    document.getElementById('ping').value = 600;
+    document.getElementById('con').value = 30;
+    document.getElementById('max').value = 80;
+    document.getElementById('panel').classList.remove('hidden');
+    showToast('✅ پروفایل رایتل فعال شد');
+}
+
+function setProfileShatel() {
+    document.getElementById('num').value = 200;
+    document.getElementById('time').value = 8000;
+    document.getElementById('ping').value = 1200;
+    document.getElementById('con').value = 30;
+    document.getElementById('max').value = 100;
+    document.getElementById('panel').classList.remove('hidden');
+    showToast('✅ پروفایل شاتل فعال شد');
+}
+
+function setProfileSamantell() {
+    document.getElementById('num').value = 200;
+    document.getElementById('time').value = 5500;
+    document.getElementById('ping').value = 700;
+    document.getElementById('con').value = 30;
+    document.getElementById('max').value = 90;
+    document.getElementById('panel').classList.remove('hidden');
+    showToast('✅ پروفایل سامانتل فعال شد');
+}
+
+function openCustomProfile() {
+    // تنظیمات دیفالت در مودال
+    document.getElementById('customNum').value = 50;
+    document.getElementById('customTime').value = 6000;
+    document.getElementById('customPing').value = 800;
+    document.getElementById('customCon').value = 10;
+    document.getElementById('customMax').value = 100;
+    document.getElementById('customModal').style.display = 'flex';
+}
+
+function closeCustomProfile(e) {
+    if (e && e.target.id !== 'customModal') return;
+    document.getElementById('customModal').style.display = 'none';
+}
+
+function applyCustomProfile() {
+    document.getElementById('num').value = document.getElementById('customNum').value;
+    document.getElementById('time').value = document.getElementById('customTime').value;
+    document.getElementById('ping').value = document.getElementById('customPing').value;
+    document.getElementById('con').value = document.getElementById('customCon').value;
+    document.getElementById('max').value = document.getElementById('customMax').value;
+    document.getElementById('panel').classList.remove('hidden');
+    closeCustomProfile();
+    showToast('✅ تنظیمات سفارشی اعمال شد');
+}
+
+function showMsg(text, type) {
+    var msgDiv = document.getElementById('msg');
+    msgDiv.innerHTML = '<div class="alert alert-' + type + '">' + text + '</div>';
+}
+
+function toggleAdvanced() {
+    var panel = document.getElementById('advancedPanel');
+    var arrow = document.getElementById('advancedArrow');
+    
+    var currentHeight = panel.style.maxHeight;
+    
+    if (currentHeight === '0px' || currentHeight === '' || !currentHeight) {
+        panel.style.maxHeight = panel.scrollHeight + 'px';
+        arrow.style.transform = 'rotate(180deg)';
+    } else {
+        panel.style.maxHeight = '0px';
+        arrow.style.transform = 'rotate(0deg)';
+    }
+}
+
+// Helper function برای الگوریتم پیشرفته
+function updateAdvancedStats(ip, found) {
+    if (!globalAdvancedAlgorithm) return;
+    
+    // یافتن رنج IP
+    for (var r = 0; r < rg.length; r++) {
+        var parts = rg[r].split('/');
+        var ipParts = ip.split('.');
+        var rangeParts = parts[0].split('.');
+        
+        var match = true;
+        for (var p = 0; p < 3; p++) {
+            if (ipParts[p] !== rangeParts[p]) {
+                match = false;
+                break;
+            }
+        }
+        
+        if (match) {
+            rangeStats[r].tested++;
+            if (found) {
+                rangeStats[r].found++;
+            }
+            rangeIPCount[r]++;
+            
+            // بعد از 200 IP تست شده، رنج‌های بدون نتیجه را حذف کن
+            if (rangeStats[r].tested >= 200 && rangeStats[r].found === 0) {
+                activeRanges = activeRanges.filter(function(idx) { return idx !== r; });
+                console.log('Range ' + rg[r] + ' removed (200 IPs, 0 found)');
+                updateAdvancedStatsDisplay();
+            }
+            
+            // آپدیت نمایش
+            updateAdvancedStatsDisplay();
+            break;
+        }
+    }
+}
+
+function updateAdvancedStatsDisplay() {
+    if (!globalAdvancedAlgorithm) return;
+    
+    var panel = document.getElementById('advancedStatsPanel');
+    if (panel) {
+        panel.style.display = 'block';
+        var totalTested = 0;
+        for (var r = 0; r < rg.length; r++) {
+            totalTested += rangeStats[r].tested;
+        }
+        var removedCount = rg.length - activeRanges.length;
+        
+        document.getElementById('activeRangeCount').textContent = activeRanges.length;
+        document.getElementById('testedCount').textContent = totalTested;
+        document.getElementById('totalCount').textContent = totalTested + activeRanges.length * 50;
+        document.getElementById('removedRanges').textContent = removedCount;
+    }
+}
+
+function toggleDL() {
+    var ch = document.getElementById('dl').checked;
+    var op = document.getElementById('dlOpt');
+    if (ch) {
+        op.classList.add('active');
+    } else {
+        op.classList.remove('active');
+    }
+}
+
+function toggleUL() {
+    var ch = document.getElementById('ul').checked;
+    var op = document.getElementById('ulOpt');
+    if (ch) {
+        op.classList.add('active');
+    } else {
+        op.classList.remove('active');
+    }
+}
+
+function toggleRangeSegment() {
+    var ch = document.getElementById('rangeSegment').checked;
+    var op = document.getElementById('segOpt');
+    if (ch) {
+        op.classList.add('active');
+    } else {
+        op.classList.remove('active');
+    }
+}
+
+function toggleV2RayOptions() {
+    var ch = document.getElementById('v2rayTest').checked;
+    var op = document.getElementById('v2rayOptions');
+    if (ch) {
+        op.style.display = 'block';
+    } else {
+        op.style.display = 'none';
+    }
+}
+
+function toggleSingleRangeMode() {
+    var ch = document.getElementById('scanSingleRange').checked;
+    var op = document.getElementById('singleRangeContent');
+    if (ch) {
+        op.style.display = 'block';
+    } else {
+        op.style.display = 'none';
+    }
+}
+
+function toggleWebsiteMode() {
+    var ch = document.getElementById('selectWebsite').checked;
+    var op = document.getElementById('websiteContent');
+    if (ch) {
+        op.style.display = 'block';
+    } else {
+        op.style.display = 'none';
+        document.getElementById('websiteInfo').style.display = 'none';
+    }
+}
+
+function updateWebsiteInfo() {
+    var select = document.getElementById('websiteSelect');
+    var websiteKey = select.value;
+    var infoDiv = document.getElementById('websiteInfo');
+    
+    if (!websiteKey) {
+        infoDiv.style.display = 'none';
+        return;
+    }
+    
+    var website = cloudflareWebsites[websiteKey];
+    if (!website) {
+        infoDiv.style.display = 'none';
+        return;
+    }
+    
+    document.getElementById('websiteName').textContent = website.name;
+    document.getElementById('websiteDomain').textContent = website.domain;
+    
+    var urlsDiv = document.getElementById('websiteURLs');
+    urlsDiv.innerHTML = website.urls.map(function(url) {
+        return '<div>• ' + url + '</div>';
+    }).join('');
+    
+    infoDiv.style.display = 'block';
+}
+
+// افزودن event listener برای website select
+document.addEventListener('DOMContentLoaded', function() {
+    var websiteSelect = document.getElementById('websiteSelect');
+    if (websiteSelect) {
+        websiteSelect.addEventListener('change', updateWebsiteInfo);
+    }
+});
+
+function genIP(cd, n) {
+    var p = cd.split('/');
+    var b = p[0];
+    var bt = parseInt(p[1]);
+    var hb = 32 - bt;
+    var mh = Math.pow(2, hb);
+    var sp = Math.max(1, Math.floor(mh / n));
+    var oc = b.split('.');
+    var bi = 0;
+    bi += parseInt(oc[0]) << 24;
+    bi += parseInt(oc[1]) << 16;
+    bi += parseInt(oc[2]) << 8;
+    bi += parseInt(oc[3]);
+    var ips = [];
+    var i = 1;
+    while (i < mh && ips.length < n) {
+        var ipn = bi + i;
+        var ip = '';
+        ip += ((ipn >>> 24) & 255) + '.';
+        ip += ((ipn >>> 16) & 255) + '.';
+        ip += ((ipn >>> 8) & 255) + '.';
+        ip += (ipn & 255);
+        ips.push(ip);
+        i += sp;
+    }
+    return ips;
+}
+
+function genNeighbors(ip) {
+    var oc = ip.split('.');
+    var lst = parseInt(oc[3]);
+    var base = oc[0] + '.' + oc[1] + '.' + oc[2] + '.';
+    var ips = [];
+    for (var i = -5; i <= 5; i++) {
+        if (i === 0) continue;
+        var n = lst + i;
+        if (n > 0 && n < 256) {
+            var nip = base + n;
+            if (!testedIPs.has(nip)) {
+                ips.push(nip);
+            }
+        }
+    }
+    return ips;
+}
+
+function mDL(ip, sz, tm) {
+    return new Promise(function(res) {
+        var s = Date.now();
+        var x = new XMLHttpRequest();
+        var f = false;
+        var by = 0;
+        var ti = setTimeout(function() {
+            if (!f) {
+                f = true;
+                x.abort();
+                res(0);
+            }
+        }, tm);
+        
+        x.open('GET', 'https://speed.cloudflare.com/__down?bytes=' + (sz * 1024), true);
+        x.responseType = 'arraybuffer';
+        x.onprogress = function(e) {
+            if (e.lengthComputable) {
+                by = e.loaded;
+            }
+        };
+        x.onload = function() {
+            if (!f && x.status === 200) {
+                f = true;
+                clearTimeout(ti);
+                var el = (Date.now() - s) / 1000;
+                var bt = x.response.byteLength || by;
+                var kb = el > 0 ? Math.round((bt / 1024) / el) : 0;
+                res(kb);
+            } else {
+                if (!f) {
+                    f = true;
+                    clearTimeout(ti);
+                    res(0);
+                }
+            }
+        };
+        x.onerror = function() {
+            if (!f) {
+                f = true;
+                clearTimeout(ti);
+                res(0);
+            }
+        };
+        try {
+            x.send();
+        } catch(e) {
+            if (!f) {
+                f = true;
+                clearTimeout(ti);
+                res(0);
+            }
+        }
+    });
+}
+
+function mUL(ip, sz, tm) {
+    return new Promise(function(res) {
+        var s = Date.now();
+        var x = new XMLHttpRequest();
+        var f = false;
+        var ti = setTimeout(function() {
+            if (!f) {
+                f = true;
+                x.abort();
+                res(0);
+            }
+        }, tm);
+        
+        x.open('POST', 'https://speed.cloudflare.com/__up', true);
+        var nb = sz * 1024;
+        var buf = new ArrayBuffer(nb);
+        var arr = new Uint8Array(buf);
+        for (var j = 0; j < arr.length; j++) {
+            arr[j] = Math.floor(Math.random() * 256);
+        }
+        x.onload = function() {
+            if (!f) {
+                if (x.status === 200) {
+                    f = true;
+                    clearTimeout(ti);
+                    var el = (Date.now() - s) / 1000;
+                    var kb = el > 0 ? Math.round(sz / el) : 0;
+                    res(kb);
+                } else {
+                    f = true;
+                    clearTimeout(ti);
+                    res(0);
+                }
+            }
+        };
+        x.onerror = function() {
+            if (!f) {
+                f = true;
+                clearTimeout(ti);
+                res(0);
+            }
+        };
+        try {
+            x.send(buf);
+        } catch(e) {
+            if (!f) {
+                f = true;
+                clearTimeout(ti);
+                res(0);
+            }
+        }
+    });
+}
+
+function tst(ip, tm, chDL, szDL, chUL, szUL) {
+    return new Promise(function(res) {
+        var s = Date.now();
+        var im = new Image();
+        var f = false;
+        var ti = setTimeout(function() {
+            if (!f) {
+                f = true;
+                im.src = '';
+                res(null);
+            }
+        }, tm);
+        im.onload = im.onerror = function() {
+            if (!f) {
+                f = true;
+                clearTimeout(ti);
+                var pg = Date.now() - s;
+                
+                if (chDL && chUL) {
+                    mDL(ip, szDL, tm).then(function(dl) {
+                        mUL(ip, szUL, tm).then(function(ul) {
+                            res({ip: ip, ping: pg, speed: dl, upload: ul});
+                        });
+                    });
+                } else if (chDL) {
+                    mDL(ip, szDL, tm).then(function(dl) {
+                        res({ip: ip, ping: pg, speed: dl, upload: 0});
+                    });
+                } else if (chUL) {
+                    mUL(ip, szUL, tm).then(function(ul) {
+                        res({ip: ip, ping: pg, speed: 0, upload: ul});
+                    });
+                } else {
+                    res({ip: ip, ping: pg, speed: 0, upload: 0});
+                }
+            }
+        };
+        im.src = 'https://' + ip + '/cdn-cgi/trace?r=' + Math.random();
+    });
+}
+
+// محاسبه Jitter - اندازه گیری نوسان Ping
+function calculateJitter(ip, tm, samples) {
+    return new Promise(function(res) {
+        var pings = [];
+        var count = 0;
+        
+        function measurePing() {
+            var s = Date.now();
+            var im = new Image();
+            var ti = setTimeout(function() {
+                im.src = '';
+            }, tm);
+            
+            im.onload = im.onerror = function() {
+                clearTimeout(ti);
+                var pg = Date.now() - s;
+                pings.push(pg);
+                count++;
+                
+                if (count < samples) {
+                    setTimeout(measurePing, 50);
+                } else {
+                    // محاسبه نوسان
+                    var avg = pings.reduce(function(a, b) { return a + b; }, 0) / pings.length;
+                    var variance = pings.reduce(function(a, b) { return a + Math.pow(b - avg, 2); }, 0) / pings.length;
+                    var jitter = Math.sqrt(variance);
+                    res(Math.round(jitter));
+                }
+            };
+            im.src = 'https://' + ip + '/cdn-cgi/trace?r=' + Math.random();
+        }
+        
+        measurePing();
+    });
+}
+
+// تست V2Ray - ارسال درخواست از طریق سرور V2Ray محلی
+// نیاز به: Backend proxy server یا V2Ray HTTP gateway
+// بک‌اند را می‌توان با Node.js + express-http-proxy ایجاد کرد
+function testV2Ray(ip, tm) {
+    return new Promise(function(res) {
+        var v2rayAddr = document.getElementById('v2rayAddr').value;
+        
+        if (!v2rayAddr || v2rayAddr.trim() === '') {
+            res(null);
+            return;
+        }
+        
+        var s = Date.now();
+        var xhr = new XMLHttpRequest();
+        xhr.timeout = tm;
+        
+        // درخواست از طریق gateway (مثال: http://localhost:3000/proxy?url=...)
+        var gatewayUrl = 'http://' + v2rayAddr + '/proxy?url=https://' + ip + '/cdn-cgi/trace';
+        
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+                var pg = Math.max(1, Date.now() - s);
+                if (xhr.status === 200) {
+                    res({ip: ip, v2ray: true, ping: pg, status: 'OK'});
+                } else {
+                    res({ip: ip, v2ray: true, ping: pg, status: 'FAIL'});
+                }
+            }
+        };
+        
+        xhr.onerror = function() {
+            res(null);
+        };
+        
+        xhr.onabort = function() {
+            res(null);
+        };
+        
+        try {
+            xhr.open('GET', gatewayUrl, true);
+            xhr.send();
+        } catch(e) {
+            res(null);
+        }
+    });
+}
+
+function upd(te, to, wo, fa) {
+    var pc = to > 0 ? Math.round((te / to) * 100) : 0;
+    document.getElementById('pct').textContent = pc + '%';
+    document.getElementById('bar').style.width = pc + '%';
+    document.getElementById('tst').textContent = te;
+    document.getElementById('ok').textContent = wo;
+    document.getElementById('bad').textContent = fa;
+}
+
+function replaceIP(config, newIP) {
+    var match = config.match(/@([^:]+):/);
+    if (!match) return config;
+    var oldIP = match[1];
+    return config.replace('@' + oldIP + ':', '@' + newIP + ':');
+}
+
+function copyConfig(ip) {
+    if (!vlessConfig) {
+        showToast('ابتدا کانفیگ VLESS را بارگذاری کنید', 'error');
+        return;
+    }
+    
+    // بررسی صحت کانفیگ
+    if (!vlessConfig.includes('vless://') || !vlessConfig.includes('@')) {
+        showToast('❌ کانفیگ VLESS معتبر نیست (فرمت اشتباه)', 'error');
+        return;
+    }
+    
+    var newConfig = replaceIP(vlessConfig, ip);
+    
+    // بررسی اینکه IP درست جایگزین شده
+    if (!newConfig.includes(ip + ':') && !newConfig.includes(ip + '?')) {
+        showToast('❌ خطا در جایگزینی IP (شاید کانفیگ صحیح نیست)', 'error');
+        return;
+    }
+    
+    var textArea = document.createElement("textarea");
+    textArea.value = newConfig;
+    textArea.style.position = "fixed";
+    textArea.style.left = "-999999px";
+    textArea.style.top = "-999999px";
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    
+    var copySuccess = false;
+    try {
+        var successful = document.execCommand('copy');
+        if (successful) {
+            copySuccess = true;
+        }
+    } catch (err) {
+        // در صورت خطا، سعی کن از clipboard API استفاده کن
+    }
+    
+    if (textArea.parentNode) {
+        document.body.removeChild(textArea);
+    }
+    
+    if (copySuccess) {
+        showToast('✅ کانفیگ کپی شد');
+    } else if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(newConfig).then(function() {
+            showToast('✅ کانفیگ کپی شد');
+        }).catch(function(err) {
+            console.error('Copy error:', err);
+            showToast('❌ خطا در کپی، لطفا دستی کپی کنید', 'error');
+            prompt('کانفیگ را کپی کنید:\n\n' + newConfig, newConfig);
+        });
+    } else {
+        showToast('❌ امکان کپی وجود ندارد', 'error');
+        prompt('کانفیگ را کپی کنید:\n\n' + newConfig, newConfig);
+    }
+}
+
+function showToast(text, type) {
+    var toast = document.createElement('div');
+    toast.className = 'toast';
+    if (type === 'error') {
+        toast.style.background = '#ef4444';
+    }
+    toast.textContent = text;
+    document.body.appendChild(toast);
+    setTimeout(function() {
+        toast.remove();
+    }, 3000);
+}
+
+function show() {
+    var d = document.getElementById('list');
+    if (rs.length === 0) {
+        d.innerHTML = '<div class="empty-state"><div class="icon">🔍</div><p>در حال تست...</p></div>';
+        document.getElementById('cnt').textContent = '0';
+        return;
+    }
+    var chJitter = document.getElementById('jitterTest').checked;
+    var chV2Ray = document.getElementById('v2rayTest').checked;
+    var h = '';
+    for (var i = 0; i < rs.length; i++) {
+        var r = rs[i];
+        var co = r.ping < 200 ? 'green' : r.ping < 400 ? 'yellow' : 'orange';
+        var sp = r.speed > 0 ? '<div class="speed-info">⬇ ' + r.speed + ' KB/s</div>' : '';
+        var up = r.upload > 0 ? '<div class="speed-info">⬆ ' + r.upload + ' KB/s</div>' : '';
+        var ji = (chJitter && r.jitter > 0) ? '<div class="speed-info">📊 Jitter: ' + r.jitter + 'ms</div>' : '';
+        var v2r = (chV2Ray && r.v2ray) ? '<div class="speed-info" style="background: ' + (r.status === 'OK' ? '#10b981' : '#ef4444') + ';">🔗 V2Ray: ' + r.status + '</div>' : '';
+        var encodedCfg = encodeURIComponent(replaceIP(vlessConfig, r.ip));
+        var qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' + encodedCfg;
+        
+        h += '<div class="result-item">';
+        h += '<div class="result-header">';
+        h += '<div class="result-left">';
+        h += '<div class="result-rank">#' + (i + 1) + '</div>';
+        h += '<div class="status-dot status-' + co + '"></div>';
+        h += '<div class="result-ip">' + r.ip + '</div>';
+        h += '</div>';
+        h += '<div style="display: flex; gap: 6px;">';
+        h += '<button class="copy-btn" onclick="copyConfig(\'' + r.ip + '\')">📋 کپی کانفیگ</button>';
+        h += '<button class="copy-btn" style="background: #f59e0b; padding: 8px 12px; font-size: 12px;" onclick="showQRForIP(\'' + r.ip + '\', \'' + qrUrl.replace(/'/g, "\\'") + '\')">📱 QR</button>';
+        h += '</div>';
+        h += '</div>';
+        h += '<div class="result-stats">';
+        h += '<div><div class="ping-value">' + r.ping + '<span style="font-size:14px">ms</span></div></div>';
+        h += '<div>' + sp + up + ji + v2r + '</div>';
+        h += '</div>';
+        h += '</div>';
+    }
+    d.innerHTML = h;
+    document.getElementById('cnt').textContent = rs.length;
+}
+
+var pausedAt = 0;
+var pausedState = null;
+
+function handlePauseResume() {
+    // این تابع اکنون استفاده نمی‌شود
+}
+
+function restartScan(event) {
+    event.stopPropagation();
+    st = false;
+    sc = false;
+    pausedAt = 0;
+    currentIndex = 0;
+    currentProc = null;
+    rs = []; // پاک کردن نتایج قبلی
+    smartQueue = []; // پاک کردن queue
+    testedIPs = new Set(); // پاک کردن IP های تست شده
+    
+    // پنهان کردن دکمه‌های ادامه/شروع مجدد
+    document.getElementById('pauseControls').style.display = 'none';
+    
+    // نمایش دکمه شروع اسکن
+    var btn = document.getElementById('btn');
+    btn.style.display = 'block';
+    btn.textContent = 'شروع اسکن';
+    btn.className = 'btn btn-success';
+    btn.onclick = scan;
+    
+    // پاک کردن نتایج از UI
+    document.getElementById('list').innerHTML = '<div class="empty-state"><div class="icon">🎯</div><p>آماده برای شروع</p></div>';
+    document.getElementById('cnt').textContent = '0';
+    
+    // شروع اسکن دوباره
+    scan(true); // true = شروع نو
+}
+
+function resumeScan(event) {
+    event.stopPropagation();
+    st = false; // ادامه اسکن
+    // دکمه توقف را دوباره نمایش بده
+    var btn = document.getElementById('btn');
+    btn.style.display = 'block';
+    btn.textContent = 'توقف';
+    btn.className = 'btn btn-danger';
+    btn.onclick = function() {
+        st = true;
+        btn.style.display = 'none';
+        document.getElementById('pauseControls').style.display = 'grid';
+    };
+    // دکمه‌های ادامه/شروع مجدد را بپنهان کن
+    document.getElementById('pauseControls').style.display = 'none';
+    
+    // اسکن را ادامه بده با استفاده از currentProc
+    if (currentProc) {
+        setTimeout(function() { currentProc(currentIndex); }, 100);
+    }
+}
+
+function scan(isRestart = false) {
+    if (!vlessConfig) {
+        showToast('ابتدا کانفیگ VLESS بارگذاری کنید', 'error');
+        return;
+    }
+    
+    // اگر شروع نو است یا اسکن در حال اجرا نیست
+    if (!isRestart && sc) {
+        st = true;
+        document.getElementById('btn').style.display = 'none';
+        document.getElementById('pauseControls').style.display = 'grid';
+        return;
+    }
+    
+    sc = true;
+    st = false;
+    rs = []; // همیشه پاک کن
+    smartQueue = []; // همیشه پاک کن
+    testedIPs = new Set(); // همیشه پاک کن
+    
+    var nu = parseInt(document.getElementById('num').value);
+    var ti = parseInt(document.getElementById('time').value);
+    var pg = parseInt(document.getElementById('ping').value);
+    var cn = parseInt(document.getElementById('con').value);
+    var mx = parseInt(document.getElementById('max').value);
+    var chDL = document.getElementById('dl').checked;
+    var szDL = parseInt(document.getElementById('dlSize').value);
+    var mnDL = parseInt(document.getElementById('minDL').value);
+    var chUL = document.getElementById('ul').checked;
+    var szUL = parseInt(document.getElementById('ulSize').value);
+    var mnUL = parseInt(document.getElementById('minUL').value);
+    var chJitter = document.getElementById('jitterTest').checked;
+    var maxJitter = parseInt(document.getElementById('maxJitter').value) || 0;
+    var smartScan = document.getElementById('smartScan').checked;
+    var parallelRanges = document.getElementById('parallelRanges').checked;
+    var rangeSegment = document.getElementById('rangeSegment').checked;
+    var segments = parseInt(document.getElementById('segments').value) || 3;
+    var strictTest = document.getElementById('strictTest').checked;
+    var advancedAlgorithm = document.getElementById('advancedAlgorithm')?.checked || false;
+    globalAdvancedAlgorithm = advancedAlgorithm; // ذخیره به صورت جهانی
+    var ipPerRange = parseInt(document.getElementById('ipPerRange').value) || 50;
+    var v2rayTest = document.getElementById('v2rayTest').checked;
+    var scanSingleRange = document.getElementById('scanSingleRange').checked;
+    var singleRangeInput = document.getElementById('singleRangeInput').value.trim();
+    var selectWebsite = document.getElementById('selectWebsite').checked;
+    var websiteSelect = document.getElementById('websiteSelect').value;
+    var selectedWebsite = null;
+    
+    // تعیین سایت انتخاب شده
+    if (selectWebsite && websiteSelect && websiteSelect !== 'test-all') {
+        selectedWebsite = cloudflareWebsites[websiteSelect];
+    }
+    
+    var bt = document.getElementById('btn');
+    bt.textContent = 'توقف';
+    bt.className = 'btn btn-danger';
+    bt.onclick = function() {
+        st = true;
+        bt.style.display = 'none';
+        document.getElementById('pauseControls').style.display = 'grid';
+    };
+    document.getElementById('prog').classList.add('active');
+    
+    var al = [];
+    
+    // اگر Website Selection فعال باشد
+    if (selectWebsite) {
+        // اگر سایت انتخاب شده باشد، فقط IP ranges سایت رو تست کن
+        if (websiteSelect === 'test-all') {
+            // تست همه سایت‌ها
+            showMsg('⚡ تمام سایت‌ها را اسکن میکنم...', 'info');
+            for (var key in cloudflareWebsites) {
+                var site = cloudflareWebsites[key];
+                if (site.ranges) {
+                    for (var r = 0; r < site.ranges.length; r++) {
+                        var ips = genIP(site.ranges[r], ipPerRange);
+                        al = al.concat(ips);
+                    }
+                }
+            }
+        } else if (selectedWebsite && selectedWebsite.ranges) {
+            // فقط سایت انتخاب شده رو اسکن کن
+            showMsg('🌐 ' + selectedWebsite.name + ' را اسکن میکنم (' + selectedWebsite.ranges.length + ' رنج)...', 'info');
+            for (var r = 0; r < selectedWebsite.ranges.length; r++) {
+                var ips = genIP(selectedWebsite.ranges[r], ipPerRange);
+                al = al.concat(ips);
+            }
+        } else {
+            // اگر هیچ سایتی درست انتخاب نشده، عادی اسکن کن
+            showMsg('⚠️ سایت انتخاب نشده. عادی اسکن شروع میشود...', 'warning');
+            for (var r = 0; r < rg.length; r++) {
+                var ips = genIP(rg[r], ipPerRange);
+                al = al.concat(ips);
+            }
+        }
+    } else if (scanSingleRange && singleRangeInput) {
+        // مثلا اگر کاربر "104.3" وارد کند، ما باید رنج 104.3.0.0/24 را اسکن کنیم
+        var singleRangeCIDR = singleRangeInput + '.0.0/24';
+        var ips = genIP(singleRangeCIDR, ipPerRange);
+        al = al.concat(ips);
+        showMsg('🎯 اسکن رنج مشخص: ' + singleRangeInput + ' (' + al.length + ' IP)', 'info');
+    } else if (rangeSegment) {
+        // تقسیم رنج‌ها
+        for (var r = 0; r < rg.length; r++) {
+            var rangeIPs = genIP(rg[r], ipPerRange * segments);
+            for (var s = 0; s < segments; s++) {
+                var start = Math.floor((s * rangeIPs.length) / segments);
+                var end = Math.floor(((s + 1) * rangeIPs.length) / segments);
+                var segment = rangeIPs.slice(start, end);
+                al = al.concat(segment.slice(0, Math.ceil(ipPerRange / segments)));
+            }
+        }
+    } else if (parallelRanges) {
+        // موازی رنج‌ها - round-robin
+        var maxRangeIPs = 0;
+        var rangesData = [];
+        for (var r = 0; r < rg.length; r++) {
+            var rangeIPs = genIP(rg[r], ipPerRange);
+            rangesData.push(rangeIPs);
+            maxRangeIPs = Math.max(maxRangeIPs, rangeIPs.length);
+        }
+        for (var i = 0; i < maxRangeIPs; i++) {
+            for (var r = 0; r < rangesData.length; r++) {
+                if (i < rangesData[r].length) {
+                    al.push(rangesData[r][i]);
+                }
+            }
+        }
+    } else {
+        // ترتیبی عادی
+        for (var r = 0; r < rg.length; r++) {
+            var ips = genIP(rg[r], ipPerRange);
+            al = al.concat(ips);
+        }
+    }
+    
+    al.sort(function() { return Math.random() - 0.5; });
+    
+    // Initialize advanced algorithm
+    if (advancedAlgorithm) {
+        rangeStats = {};
+        activeRanges = [];
+        rangeIPCount = {};
+        for (var r = 0; r < rg.length; r++) {
+            rangeStats[r] = {tested: 0, found: 0};
+            activeRanges.push(r);
+            rangeIPCount[r] = 0;
+        }
+        showMsg('🚀 الگوریتم پیشرفته فعال شد - رنج‌های موفق را پیگیری می‌کنم', 'info');
+    }
+    
+    document.getElementById('tot').textContent = al.length;
+    
+    var te = 0, wo = 0, fa = 0;
+    
+    function proc(ix) {
+        currentIndex = ix; // ذخیره index فعلی
+        currentProc = proc; // ذخیره تابع proc
+        
+        if (st) {
+            sc = true; // اسکن هنوز فعال است، فقط متوقف شده
+            return;
+        }
+        
+        if (rs.length >= mx) {
+            sc = false;
+            var btn = document.getElementById('btn');
+            btn.textContent = 'شروع اسکن';
+            btn.className = 'btn btn-success';
+            btn.onclick = scan;
+            document.getElementById('btn').style.display = 'block';
+            document.getElementById('pauseControls').style.display = 'none';
+            return;
+        }
+        
+        // تست از smartQueue اگر موجود باشد
+        if (smartQueue.length > 0) {
+            var ei = Math.min(smartQueue.length, cn);
+            var ba = smartQueue.splice(0, ei);
+            var pr = [];
+            for (var j = 0; j < ba.length; j++) {
+                pr.push(tst(ba[j], ti, chDL, szDL, chUL, szUL));
+            }
+            
+            Promise.all(pr).then(function(br) {
+                for (var k = 0; k < br.length; k++) {
+                    te++;
+                    var re = br[k];
+                    if (re !== null) {
+                        testedIPs.add(re.ip);
+                        if (re.ping < pg) {
+                            var gd = true;
+                            if (chDL && re.speed < mnDL) gd = false;
+                            if (chUL && re.upload < mnUL) gd = false;
+                            // اگر currentStrictTest فعال باشد، ping را سخت‌گیرانه فیلتر کن
+                            if (currentStrictTest && re.ping > pg * 0.7) gd = false; // فقط بهترین IP‌ها
+                            // اگر maxJitter تعیین شده باشد، جیتر را فیلتر کن
+                            if (maxJitter > 0 && chJitter && re.jitter > maxJitter) gd = false;
+                            if (gd) {
+                                wo++;
+                                updateAdvancedStats(re.ip, true);
+                                rs.push(re);
+                                if (smartScan && smartQueue.length < 50) {
+                                    var nb = genNeighbors(re.ip);
+                                    smartQueue = smartQueue.concat(nb);
+                                }
+                                sortResults(chDL, chUL);
+                                if (rs.length > mx) rs = rs.slice(0, mx);
+                                show();
+                            } else {
+                                updateAdvancedStats(re.ip, false);
+                                fa++;
+                            }
+                        } else {
+                            updateAdvancedStats(re.ip, false);
+                            fa++;
+                        }
+                    } else {
+                        fa++;
+                    }
+                }
+                upd(te, al.length + smartQueue.length, wo, fa);
+                if (!st) {
+                    setTimeout(function() { proc(ix); }, 100);
+                }
+            });
+        } else if (ix >= al.length) {
+            sc = false;
+            var btn = document.getElementById('btn');
+            btn.textContent = 'شروع اسکن';
+            btn.className = 'btn btn-success';
+            btn.onclick = scan;
+            document.getElementById('btn').style.display = 'block';
+            document.getElementById('pauseControls').style.display = 'none';
+            return;
+        } else {
+            var ei = Math.min(ix + cn, al.length);
+            var ba = al.slice(ix, ei);
+            var pr = [];
+            for (var j = 0; j < ba.length; j++) {
+                pr.push(tst(ba[j], ti, chDL, szDL, chUL, szUL));
+            }
+            
+            Promise.all(pr).then(function(br) {
+                for (var k = 0; k < br.length; k++) {
+                    te++;
+                    var re = br[k];
+                    if (re !== null) {
+                        testedIPs.add(re.ip);
+                        if (re.ping < pg) {
+                            var gd = true;
+                            if (chDL && re.speed < mnDL) gd = false;
+                            if (chUL && re.upload < mnUL) gd = false;
+                            // اگر currentStrictTest فعال باشد، ping را سخت‌گیرانه فیلتر کن
+                            if (currentStrictTest && re.ping > pg * 0.7) gd = false; // فقط بهترین IP‌ها
+                            // اگر maxJitter تعیین شده باشد، جیتر را فیلتر کن
+                            if (maxJitter > 0 && chJitter && re.jitter > maxJitter) gd = false;
+                            if (gd) {
+                                wo++;
+                                updateAdvancedStats(re.ip, true);
+                                rs.push(re);
+                                if (smartScan && smartQueue.length < 50) {
+                                    var nb = genNeighbors(re.ip);
+                                    smartQueue = smartQueue.concat(nb);
+                                }
+                                sortResults(chDL, chUL);
+                                if (rs.length > mx) rs = rs.slice(0, mx);
+                                show();
+                            } else {
+                                updateAdvancedStats(re.ip, false);
+                                fa++;
+                            }
+                        } else {
+                            updateAdvancedStats(re.ip, false);
+                            fa++;
+                        }
+                    } else {
+                        fa++;
+                    }
+                }
+                upd(te, al.length + smartQueue.length, wo, fa);
+                setTimeout(function() { proc(ix + cn); }, 100);
+            });
+        }
+    }
+    currentProc = proc; // ذخیره تابع proc جدید
+    currentStrictTest = strictTest; // ذخیره strictTest برای استفاده در proc
+    proc(0);
+}
+
+function sortResults(chDL, chUL) {
+    if (chDL && chUL) {
+        rs.sort(function(a, b) { return (b.speed + b.upload) - (a.speed + a.upload); });
+    } else if (chDL) {
+        rs.sort(function(a, b) { return b.speed - a.speed; });
+    } else if (chUL) {
+        rs.sort(function(a, b) { return b.upload - a.upload; });
+    } else {
+        rs.sort(function(a, b) { return a.ping - b.ping; });
+    }
+}
+
+function sortBetter() {
+    if (rs.length === 0) {
+        showToast('نتیجه‌ای وجود ندارد', 'error');
+        return;
+    }
+    
+    // Score = (1000 - Ping*0.5) + Speed*0.3 + Upload*0.2
+    rs.sort(function(a, b) {
+        var scoreA = (1000 - (a.ping || 0) * 0.5) + ((a.speed || 0) * 0.3) + ((a.upload || 0) * 0.2);
+        var scoreB = (1000 - (b.ping || 0) * 0.5) + ((b.speed || 0) * 0.3) + ((b.upload || 0) * 0.2);
+        return scoreB - scoreA;
+    });
+    show();
+    showToast('✅ نتایج بر اساس امتیاز ترتیب شدند', 'success');
+}
+
+function cpAll() {
+    if (rs.length === 0) {
+        showToast('نتیجه‌ای وجود ندارد', 'error');
+        return;
+    }
+    var t = '';
+    for (var i = 0; i < rs.length; i++) {
+        t += rs[i].ip + '\n';
+    }
+    
+    var textArea = document.createElement("textarea");
+    textArea.value = t;
+    textArea.style.position = "fixed";
+    textArea.style.left = "-999999px";
+    document.body.appendChild(textArea);
+    textArea.select();
+    
+    try {
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        showToast('✅ ' + rs.length + ' IP کپی شد');
+    } catch (err) {
+        document.body.removeChild(textArea);
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(t).then(function() {
+                showToast('✅ ' + rs.length + ' IP کپی شد');
+            }).catch(function() {
+                prompt('IP ها را کپی کنید:', t);
+            });
+        } else {
+            prompt('IP ها را کپی کنید:', t);
+        }
+    }
+}
+
+function cpAllConfigs() {
+    if (rs.length === 0) {
+        showToast('نتیجه‌ای وجود ندارد', 'error');
+        return;
+    }
+    if (!vlessConfig) {
+        showToast('ابتدا کانفیگ VLESS بارگذاری کنید', 'error');
+        return;
+    }
+    
+    var configs = [];
+    for (var i = 0; i < rs.length; i++) {
+        var newConfig = replaceIP(vlessConfig, rs[i].ip);
+        configs.push(newConfig);
+    }
+    
+    var allConfigs = configs.join('\n');
+    
+    var textArea = document.createElement("textarea");
+    textArea.value = allConfigs;
+    textArea.style.position = "fixed";
+    textArea.style.left = "-999999px";
+    document.body.appendChild(textArea);
+    textArea.select();
+    
+    try {
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        showToast('✅ ' + rs.length + ' کانفیگ کپی شد');
+    } catch (err) {
+        document.body.removeChild(textArea);
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(allConfigs).then(function() {
+                showToast('✅ ' + rs.length + ' کانفیگ کپی شد');
+            }).catch(function() {
+                prompt('کانفیگ‌ها را کپی کنید:', allConfigs);
+            });
+        } else {
+            prompt('کانفیگ‌ها را کپی کنید:', allConfigs);
+        }
+    }
+}
+
+function generateQR(text) {
+    // استفاده از API QR Code آنلاین
+    var encodedText = encodeURIComponent(text);
+    return 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=' + encodedText;
+}
+
+function showQRForIP(ip, qrUrl) {
+    if (!vlessConfig) {
+        showToast('ابتدا کانفیگ VLESS بارگذاری کنید', 'error');
+        return;
+    }
+    
+    var cfg = replaceIP(vlessConfig, ip);
+    var encodedCfg = encodeURIComponent(cfg);
+    var fullQrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=' + encodedCfg;
+    
+    // ایجاد مودال
+    var modal = document.createElement('div');
+    modal.id = 'tempQRModal';
+    modal.style.cssText = 'position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(8px); z-index: 2000; display: flex; align-items: center; justify-content: center;';
+    
+    var content = document.createElement('div');
+    content.style.cssText = 'background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 50%, #0f0f23 100%); padding: 30px; border-radius: 16px; text-align: center; border: 1px solid rgba(102, 126, 234, 0.3);';
+    
+    var title = document.createElement('h3');
+    title.innerHTML = '📱 QR Code - IP: ' + ip;
+    title.style.cssText = 'color: #00d4ff; margin: 0 0 15px 0; font-size: 18px;';
+    
+    var img = document.createElement('img');
+    img.src = fullQrUrl;
+    img.style.cssText = 'width: 300px; height: 300px; border-radius: 8px; margin-bottom: 15px; border: 2px solid #667eea;';
+    
+    var pingText = document.createElement('p');
+    var result = rs.find(function(r) { return r.ip === ip; });
+    if (result) {
+        pingText.innerHTML = '⏱️ Ping: ' + result.ping + 'ms | 📥 Speed: ' + (result.speed || 0) + 'KB/s';
+    }
+    pingText.style.cssText = 'color: #b0b0b0; font-size: 13px; margin: 10px 0;';
+    
+    var buttonGroup = document.createElement('div');
+    buttonGroup.style.cssText = 'display: flex; gap: 10px; justify-content: center; margin-top: 15px;';
+    
+    var copyBtn = document.createElement('button');
+    copyBtn.innerHTML = '📋 کپی کانفیگ';
+    copyBtn.style.cssText = 'padding: 10px 20px; background: #667eea; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;';
+    copyBtn.onclick = function() {
+        navigator.clipboard.writeText(cfg).then(function() {
+            showToast('✅ کانفیگ کپی شد');
+        });
+    };
+    
+    var closeBtn = document.createElement('button');
+    closeBtn.innerHTML = '❌ بستن';
+    closeBtn.style.cssText = 'padding: 10px 20px; background: #ef4444; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;';
+    closeBtn.onclick = function() {
+        document.body.removeChild(modal);
+    };
+    
+    buttonGroup.appendChild(copyBtn);
+    buttonGroup.appendChild(closeBtn);
+    
+    content.appendChild(title);
+    content.appendChild(img);
+    content.appendChild(pingText);
+    content.appendChild(buttonGroup);
+    
+    modal.appendChild(content);
+    modal.onclick = function(e) {
+        if (e.target === modal) {
+            document.body.removeChild(modal);
+        }
+    };
+    
+    document.body.appendChild(modal);
+}
+
+function dwn() {
+    if (rs.length === 0) {
+        showToast('نتیجه‌ای وجود ندارد', 'error');
+        return;
+    }
+    var t = 'IP\tPing\tDownload\tUpload\n';
+    for (var i = 0; i < rs.length; i++) {
+        t += rs[i].ip + '\t' + rs[i].ping + '\t' + (rs[i].speed || 0) + '\t' + (rs[i].upload || 0) + '\n';
+    }
+    var b = new Blob([t], {type: 'text/plain'});
+    var u = URL.createObjectURL(b);
+    var a = document.createElement('a');
+    a.href = u;
+    a.download = 'ips-' + Date.now() + '.txt';
+    a.click();
+    URL.revokeObjectURL(u);
+}
+
+function openTestSingle() {
+    document.getElementById('testSingleCard').classList.remove('hidden');
+    document.getElementById('singleResult').innerHTML = '';
+}
+
+function closeSingleTest() {
+    document.getElementById('testSingleCard').classList.add('hidden');
+    document.getElementById('singleResult').innerHTML = '';
+}
+
+function testSingleIP() {
+    var ip = document.getElementById('singleIP').value.trim();
+    var tm = parseInt(document.getElementById('singleTimeout').value);
+    
+    if (!ip) {
+        showToast('لطفا IP را وارد کنید', 'error');
+        return;
+    }
+    
+    if (!vlessConfig) {
+        showToast('ابتدا کانفیگ VLESS بارگذاری کنید', 'error');
+        return;
+    }
+    
+    var resultDiv = document.getElementById('singleResult');
+    resultDiv.innerHTML = '<div style="text-align: center; color: #a0a0a0;">⏳ در حال تست...</div>';
+    
+    // تست IP
+    tst(ip, tm, true, 500, true, 500, false, null).then(function(result) {
+        if (result === null) {
+            resultDiv.innerHTML = '<div class="alert alert-error">❌ IP پاسخ نداد</div>';
+            return;
+        }
+        
+        var status = result.ping < 200 ? '🟢' : result.ping < 400 ? '🟡' : '🔴';
+        var html = '<div class="result-item" style="margin-top: 10px;">';
+        html += '<div class="result-header">';
+        html += '<div class="result-left">';
+        html += '<span style="font-size: 20px;">' + status + '</span>';
+        html += '<div class="result-ip" style="margin-right: 10px;">' + result.ip + '</div>';
+        html += '</div>';
+        html += '</div>';
+        html += '<div style="margin-top: 10px; font-size: 14px;">';
+        html += '<p>⏱️ Ping: <strong>' + result.ping + 'ms</strong></p>';
+        html += '<p>⬇️ Download: <strong>' + (result.speed || 0) + ' KB/s</strong></p>';
+        html += '<p>⬆️ Upload: <strong>' + (result.upload || 0) + ' KB/s</strong></p>';
+        html += '</div>';
+        html += '<button class="copy-btn" onclick="copyConfig(\'' + result.ip + '\')" style="margin-top: 10px; width: 100%;">📋 کپی کانفیگ</button>';
+        html += '</div>';
+        
+        resultDiv.innerHTML = html;
+        showToast('✅ تست تکمیل شد', 'success');
+    });
+}
+
+function openHelp() {
+    document.getElementById('helpOverlay').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeHelp(event) {
+    if (event && event.target.id !== 'helpOverlay') return;
+    document.getElementById('helpOverlay').classList.remove('active');
+    document.body.style.overflow = 'auto';
+}
+
+// بستن راهنما با ESC
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeHelp();
+    }
+});
+
+</script>
+
+<!-- Floating Help Button -->
+<button class="float-btn" onclick="openHelp()" title="راهنما" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; padding: 12px; font-size: 20px;">
+    <span>❓</span>
+    <span style="font-size: 10px; line-height: 1;">راهنما</span>
+</button>
+
+<!-- Help Modal -->
+<div id="helpOverlay" class="modal-overlay" onclick="closeHelp(event)">
+    <div class="help-modal" onclick="event.stopPropagation()">
+        <button class="close-help-btn" onclick="closeHelp()">✕</button>
+        
+        <h1>📚 راهنمای استفاده</h1>
+        <p style="color: #ffd700; font-size: 14px; margin-bottom: 20px;"><strong>🎯 خلاصه:</strong> یک IP خوب از Cloudflare پیدا کن تا اینترنتت سریع‌تر شه!</p>
+        
+        <div class="help-section">
+            <h3>1️⃣ قدم اول: کانفیگ VLESS</h3>
+            <p>کانفیگ اینترنت‌ات رو اینجا کپی کن. بدون این نمی‌تونی شروع کنی!</p>
+        </div>
+        
+        <div class="help-section">
+            <h3>2️⃣ قدم دوم: انتخاب اپراتور</h3>
+            <p><strong>کدام اپراتور داری؟</strong> روی یکی از دکمه‌ها کلیک کن:
+            <br>📶 <strong>همراه اول (MCI):</strong> شبکه اول
+            <br>📱 <strong>ایرانسل:</strong> شبکه دوم (زرد)
+            <br>🔷 <strong>رایتل:</strong> شبکه سوم
+            <br>🌐 <strong>شاتل:</strong> شبکه چهارم
+            <br>⚙️ <strong>سفارشی:</strong> خودت تنظیم کن اگر اپراتورت مختلف است</p>
+        </div>
+        
+        <div class="help-section">
+            <h3>3️⃣ قدم سوم: شروع اسکن</h3>
+            <p>بعد از انتخاب اپراتور، دکمه <strong>"شروع اسکن"</strong> رو بزن و صبر کن. هر چی سریع‌تر باشه بهتره!</p>
+        </div>
+        
+        <div class="help-section" style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.05) 100%); border-left-color: #667eea;">
+            <h3>⚙️ تنظیمات (برای کاربران حرفه‌ای)</h3>
+            <p>
+            <strong>تعداد IP:</strong> چند IP بررسی کنیم (بیشتر = دقیق‌تر)<br>
+            <strong>Timeout:</strong> چند ثانیه برای هر IP صبر کنیم (بالاتر = دقیق‌تر)<br>
+            <strong>Max Ping:</strong> IP هایی رو قبول کن که ping کم‌تر از این باشه (کم = سریع‌تر)<br>
+            <strong>همزمان:</strong> چند IP رو همزمان تست کنیم (بیشتر = سریع‌تر)<br>
+            </p>
+        </div>
+        
+        <div class="help-section">
+            <h3>🧠 ویژگی‌های خاص</h3>
+            <p>
+            <strong>🧠 اسکن هوشمند:</strong> وقتی IP خوبی پیدا شد، IP های اطراف‌ش رو هم چک کن<br>
+            <strong>📊 اسکن موازی:</strong> از تمام شبکه‌ها همزمان IP بگیر (پیشنهاد: روشن)<br>
+            <strong>⬇️ تست دانلود:</strong> سرعت دانلود رو بسنج (اختیاری)<br>
+            <strong>⬆️ تست آپلود:</strong> سرعت آپلود رو بسنج (اختیاری)<br>
+            </p>
+        </div>
+        
+        <div class="help-section">
+            <h3>🎯 بعد از اسکن؟</h3>
+            <p>
+            ✓ نتایج رو ببینی<br>
+            ✓ روی دکمه <strong>⭐ بهتری</strong> کلیک کن تا بهترین‌ها رو ببینی<br>
+            ✓ IP هایی رو که دوست‌داری انتخاب کن<br>
+            ✓ روی دکمه 📋 <strong>کپی کانفیگ‌ها</strong> کلیک کن<br>
+            ✓ کانفیگ رو در app خودت وارد کن (v2rayNG, ...)
+            </p>
+        </div>
+        
+        <div class="help-section" style="background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(220, 38, 38, 0.05) 100%); border-left-color: #ef4444;">
+            <h3>⚠️ چند نکته مهم</h3>
+            <p>
+            • اگه اسکن سریع نتیجه ندید، Timeout رو بالا ببر<br>
+            • اگه IP نمی‌تونی استفاده کنی، Max Ping رو کم کن<br>
+            • اگه سرعت‌ات خیلی کند بود، دکمه "⭐ بهتری" استفاده کن<br>
+            • اگه مشکل داری، دکمه "🧪 تست یک IP" رو برای تست دستی استفاده کن
+            </p>
+        </div>
+        
+        <div class="help-section" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(5, 150, 105, 0.05) 100%); border-left-color: #10b981;">
+            <h3>✨ مسائل و بازخورد</h3>
+            <p>
+            💬 <strong>Telegram:</strong> @Dusty_Mesa<br>
+            🐙 <strong>GitHub:</strong> AmirForge<br>
+            📱 <strong>ورژن:</strong> 4.0 Advanced
+            </p>
+        </div>
+    </div>
+</div>
+
+<script>
+// Start App - Hide start screen and show operator panel
+function startApp() {
+    const startScreen = document.getElementById('startScreen');
+    
+    // Add fade out animation to start screen
+    startScreen.style.animation = 'fadeOutDown 0.6s ease forwards';
+    
+    // After animation, hide start screen and show operator panel
+    setTimeout(() => {
+        startScreen.classList.add('hidden');
+        
+        // Auto-load VLESS config from textarea
+        const vlessCfg = document.getElementById('vlessCfg');
+        if (vlessCfg && vlessCfg.value.trim()) {
+            vlessConfig = vlessCfg.value.trim();
+        }
+        
+        // Show operator panel
+        const operatorPanel = document.getElementById('operatorPanel');
+        if (operatorPanel) operatorPanel.classList.remove('hidden');
+    }, 600);
+}
+</script>
+
+</body>
+</html>
+
