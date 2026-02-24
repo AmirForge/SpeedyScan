@@ -3774,24 +3774,83 @@ function startApp() {
     // Add fade out animation to start screen
     startScreen.style.animation = 'fadeOutDown 0.6s ease forwards';
     
-    // After animation, hide start screen and show operator panel
+    // After animation, hide start screen and show config input
     setTimeout(() => {
         startScreen.classList.add('hidden');
         
-        // Auto-load VLESS config from textarea
-        const vlessCfg = document.getElementById('vlessCfg');
-        if (vlessCfg && vlessCfg.value.trim()) {
-            vlessConfig = vlessCfg.value.trim();
-        }
-        
-        // Show operator panel
-        const operatorPanel = document.getElementById('operatorPanel');
-        if (operatorPanel) operatorPanel.classList.remove('hidden');
+        // نمایش modal درخواست کانفیگ
+        showConfigModal();
     }, 600);
+}
+
+function showConfigModal() {
+    // ایجاد modal
+    var modal = document.createElement('div');
+    modal.id = 'configModal';
+    modal.style.cssText = 'position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(10px); z-index: 9999; display: flex; align-items: center; justify-content: center;';
+    
+    var content = document.createElement('div');
+    content.style.cssText = 'background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 50%, #0f0f23 100%); padding: 40px; border-radius: 20px; text-align: center; border: 2px solid rgba(102, 126, 234, 0.3); max-width: 500px; width: 90%;';
+    
+    var title = document.createElement('h2');
+    title.innerHTML = '🔐 کانفیگ VLESS وارد کنید';
+    title.style.cssText = 'color: #00d4ff; margin-bottom: 15px; font-size: 22px;';
+    
+    var desc = document.createElement('p');
+    desc.innerHTML = 'برای شروع اسکن، کانفیگ VLESS خود را اینجا وارد کنید:';
+    desc.style.cssText = 'color: #a0a0a0; font-size: 14px; margin-bottom: 20px;';
+    
+    var textarea = document.createElement('textarea');
+    textarea.id = 'modalConfigInput';
+    textarea.placeholder = 'کانفیگ VLESS را پیست کنید...';
+    textarea.style.cssText = 'width: 100%; height: 120px; background: rgba(15, 52, 96, 0.6); border: 2px solid rgba(102, 126, 234, 0.3); border-radius: 12px; padding: 12px; color: #fff; font-family: monospace; font-size: 12px; resize: vertical; margin-bottom: 15px; box-sizing: border-box;';
+    textarea.style.color = '#fff';
+    
+    var buttonGroup = document.createElement('div');
+    buttonGroup.style.cssText = 'display: flex; gap: 10px; justify-content: center;';
+    
+    var okBtn = document.createElement('button');
+    okBtn.innerHTML = '✅ شروع کن';
+    okBtn.style.cssText = 'padding: 12px 30px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 14px;';
+    okBtn.onclick = function() {
+        var cfg = textarea.value.trim();
+        if (!cfg) {
+            alert('لطفا کانفیگ را وارد کنید');
+            return;
+        }
+        if (!cfg.startsWith('vless://')) {
+            alert('فرمت کانفیگ صحیح نیست. باید vless:// شروع شود');
+            return;
+        }
+        vlessConfig = cfg;
+        document.body.removeChild(modal);
+        document.getElementById('operatorPanel').classList.remove('hidden');
+        document.getElementById('operatorPanel').style.display = 'block';
+    };
+    
+    var cancelBtn = document.createElement('button');
+    cancelBtn.innerHTML = '❌ بعداً';
+    cancelBtn.style.cssText = 'padding: 12px 30px; background: rgba(100, 100, 100, 0.6); color: white; border: 1px solid rgba(150, 150, 150, 0.3); border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 14px;';
+    cancelBtn.onclick = function() {
+        document.body.removeChild(modal);
+    };
+    
+    buttonGroup.appendChild(okBtn);
+    buttonGroup.appendChild(cancelBtn);
+    
+    content.appendChild(title);
+    content.appendChild(desc);
+    content.appendChild(textarea);
+    content.appendChild(buttonGroup);
+    
+    modal.appendChild(content);
+    document.body.appendChild(modal);
+    
+    // Focus تا کاربر بتونه دوباره تایپ کند
+    textarea.focus();
 }
 </script>
 
 </body>
 </html>
-
 
